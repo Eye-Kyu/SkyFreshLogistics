@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, Menu, Phone, X } from "lucide-react";
@@ -14,19 +15,24 @@ export function Header() {
       {/* Hotline strip */}
       <div className="hidden bg-brand-slate-950 text-white sm:block">
         <div className="container-page flex items-center justify-end gap-2 py-1.5 text-xs">
-          <Phone aria-hidden="true" className="h-3 w-3 text-brand-green-400" />
+          <Phone aria-hidden="true" className="h-3 w-3 text-brand-leaf-400" />
           <span className="text-white/60">24/7 Cargo Hotline:</span>
-          <a href={`tel:${site.hotline.replace(/\s+/g, "")}`} className="font-semibold hover:text-brand-green-300">
+          <a href={`tel:${site.hotline.replace(/\s+/g, "")}`} className="font-semibold hover:text-brand-leaf-300">
             {site.hotline}
           </a>
         </div>
       </div>
 
       <div className="container-page flex items-center justify-between py-4">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-brand-green-800 font-display text-sm font-bold text-white">
-            SF
-          </span>
+        <Link href="/" className="flex items-center gap-2.5" aria-label={`${site.fullName} — home`}>
+          <Image
+            src="/logo-mark.webp"
+            alt=""
+            width={36}
+            height={36}
+            priority
+            className="h-9 w-9 object-contain"
+          />
           <span className="font-display text-lg font-semibold text-brand-slate-900">{site.name}</span>
         </Link>
 
@@ -37,7 +43,7 @@ export function Header() {
               <div key={item.label} className="group relative">
                 <Link
                   href={item.href}
-                  className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-brand-slate-700 hover:text-brand-green-800"
+                  className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-brand-slate-700 hover:text-brand-navy-800"
                 >
                   {item.label}
                   <ChevronDown aria-hidden="true" className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
@@ -47,7 +53,7 @@ export function Header() {
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="block px-3 py-2 text-sm text-brand-slate-700 hover:bg-brand-green-50 hover:text-brand-green-800"
+                      className="block px-3 py-2 text-sm text-brand-slate-700 hover:bg-brand-navy-50 hover:text-brand-navy-800"
                     >
                       {child.label}
                     </Link>
@@ -58,7 +64,7 @@ export function Header() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="px-4 py-2 text-sm font-medium text-brand-slate-700 hover:text-brand-green-800"
+                className="px-4 py-2 text-sm font-medium text-brand-slate-700 hover:text-brand-navy-800"
               >
                 {item.label}
               </Link>
@@ -123,7 +129,7 @@ export function Header() {
               </Button>
               <a
                 href={`tel:${site.hotline.replace(/\s+/g, "")}`}
-                className="text-center text-sm font-semibold text-brand-blue-700"
+                className="text-center text-sm font-semibold text-brand-leaf-700"
               >
                 24/7 Hotline: {site.hotline}
               </a>

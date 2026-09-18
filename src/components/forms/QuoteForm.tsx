@@ -18,10 +18,10 @@ export function QuoteForm() {
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center gap-3 border border-brand-green-700/20 bg-brand-green-50 p-8 text-center">
-        <CircleCheck aria-hidden="true" className="h-8 w-8 text-brand-green-700" strokeWidth={1.5} />
-        <h3 className="font-display text-lg font-semibold text-brand-green-900">Quote request received</h3>
-        <p className="text-sm text-brand-green-800">
+      <div className="flex flex-col items-center gap-3 border border-brand-navy-700/20 bg-brand-navy-50 p-8 text-center">
+        <CircleCheck aria-hidden="true" className="h-8 w-8 text-brand-navy-700" strokeWidth={1.5} />
+        <h3 className="font-display text-lg font-semibold text-brand-navy-900">Quote request received</h3>
+        <p className="text-sm text-brand-navy-800">
           Thank you — our team will respond within one business day.
         </p>
       </div>
@@ -39,7 +39,7 @@ export function QuoteForm() {
           <span className="font-medium text-brand-slate-700">Product type</span>
           <select
             name="productType"
-            className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-green-700 focus:outline-none"
+            className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
           >
             <option>Horticulture (fruits/vegetables/herbs)</option>
             <option>Floriculture (flowers/stems/fillers)</option>
@@ -55,14 +55,14 @@ export function QuoteForm() {
         <textarea
           name="message"
           rows={4}
-          className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-green-700 focus:outline-none"
+          className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
           placeholder="Tell us anything else that will help us prepare your quote"
         />
       </label>
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="mt-2 inline-flex items-center justify-center rounded-md bg-brand-green-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-green-800 disabled:opacity-60"
+        className="mt-2 inline-flex items-center justify-center rounded-md bg-brand-navy-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-navy-800 disabled:opacity-60"
       >
         {status === "submitting" ? "Sending..." : "Request a Quote"}
       </button>
@@ -89,14 +89,14 @@ function Field({
     <label className={`flex flex-col gap-1.5 text-sm ${className}`}>
       <span className="font-medium text-brand-slate-700">
         {label}
-        {required ? <span className="text-brand-green-600"> *</span> : null}
+        {required ? <span className="text-brand-navy-600"> *</span> : null}
       </span>
       <input
         name={name}
         type={type}
         required={required}
         placeholder={placeholder}
-        className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-green-700 focus:outline-none"
+        className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
       />
     </label>
   );

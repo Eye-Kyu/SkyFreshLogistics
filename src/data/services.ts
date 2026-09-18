@@ -59,7 +59,7 @@ export const serviceDetails = [
     icon: "sprout" as const,
     title: "Farmer Sourcing",
     description:
-      "Need reliable supply? We vet growers against quality, certification, and consistency standards, then match them to your sourcing needs. The one condition: SkyFresh coordinates all cargo movement, so you get consolidated logistics alongside consolidated supply.",
+      "Need reliable supply? We vet growers against quality, certification, and consistency standards, then match them to your sourcing needs. The one condition: Bravair coordinates all cargo movement, so you get consolidated logistics alongside consolidated supply.",
     bullets: [
       "Rigorous grower vetting process",
       "Matched to your volume and product needs",

@@ -32,12 +32,12 @@ export default function ServicesPage() {
               <div key={service.id} id={service.id} className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
                 <MediaPlaceholder
                   label={service.imageAlt}
-                  tone={service.imageSide === "left" ? "blue" : "green"}
+                  tone={service.imageSide === "left" ? "leaf" : "navy"}
                   className={`h-64 sm:h-80 ${service.imageSide === "left" ? "lg:order-1" : "lg:order-2"}`}
                   icon={<Icon aria-hidden="true" className="h-8 w-8" strokeWidth={1.25} />}
                 />
                 <div className={`flex flex-col gap-5 ${service.imageSide === "left" ? "lg:order-2" : "lg:order-1"}`}>
-                  <span className="flex h-11 w-11 items-center justify-center border border-brand-slate-200 text-brand-green-700">
+                  <span className="flex h-11 w-11 items-center justify-center border border-brand-slate-200 text-brand-navy-700">
                     <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.5} />
                   </span>
                   <h2 className="font-display text-2xl font-semibold text-brand-slate-900 sm:text-3xl">{service.title}</h2>
@@ -45,7 +45,7 @@ export default function ServicesPage() {
                   <ul className="flex flex-col gap-2.5">
                     {service.bullets.map((bullet) => (
                       <li key={bullet} className="flex items-start gap-2.5 text-sm text-brand-slate-700">
-                        <Check aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-brand-green-700" strokeWidth={2} />
+                        <Check aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-brand-navy-700" strokeWidth={2} />
                         <span>{bullet}</span>
                       </li>
                     ))}
@@ -67,12 +67,12 @@ export default function ServicesPage() {
                 key={pkg.name}
                 className={`flex flex-col gap-6 p-8 ${
                   pkg.highlighted
-                    ? "border border-brand-green-400/30 bg-white shadow-lifted lg:-my-6 lg:py-12"
+                    ? "border border-brand-navy-400/30 bg-white shadow-lifted lg:-my-6 lg:py-12"
                     : "border border-white/10 bg-white/3"
                 }`}
               >
                 {pkg.highlighted ? (
-                  <Eyebrow tone="green">Most Popular</Eyebrow>
+                  <Eyebrow tone="navy">Most Popular</Eyebrow>
                 ) : (
                   <Eyebrow tone="white">Engagement Tier</Eyebrow>
                 )}
@@ -88,7 +88,7 @@ export default function ServicesPage() {
                     >
                       <Check
                         aria-hidden="true"
-                        className={`mt-0.5 h-4 w-4 shrink-0 ${pkg.highlighted ? "text-brand-green-700" : "text-brand-green-400"}`}
+                        className={`mt-0.5 h-4 w-4 shrink-0 ${pkg.highlighted ? "text-brand-navy-700" : "text-brand-navy-400"}`}
                       />
                       <span>{feature}</span>
                     </li>

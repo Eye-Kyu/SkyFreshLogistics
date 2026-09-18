@@ -57,7 +57,7 @@ export function TransitCalculator() {
             <select
               value={origin}
               onChange={(e) => setOrigin(e.target.value)}
-              className="border border-brand-slate-300 bg-white px-3 py-2.5 text-brand-slate-800 focus:border-brand-green-700 focus:outline-none"
+              className="border border-brand-slate-300 bg-white px-3 py-2.5 text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
             >
               {origins.map((o) => (
                 <option key={o} value={o}>
@@ -71,7 +71,7 @@ export function TransitCalculator() {
             <select
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
-              className="border border-brand-slate-300 bg-white px-3 py-2.5 text-brand-slate-800 focus:border-brand-green-700 focus:outline-none"
+              className="border border-brand-slate-300 bg-white px-3 py-2.5 text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
             >
               {destinations.map((d) => (
                 <option key={d} value={d}>
@@ -85,7 +85,7 @@ export function TransitCalculator() {
             <select
               value={mode}
               onChange={(e) => setMode(e.target.value as Mode)}
-              className="border border-brand-slate-300 bg-white px-3 py-2.5 text-brand-slate-800 focus:border-brand-green-700 focus:outline-none"
+              className="border border-brand-slate-300 bg-white px-3 py-2.5 text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
             >
               {modes.map((m) => (
                 <option key={m} value={m}>
@@ -97,13 +97,13 @@ export function TransitCalculator() {
         </div>
 
         {/* Route readout — boarding-pass style */}
-        <div className="mt-6 flex flex-col gap-5 border border-brand-green-700/20 bg-brand-green-50 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div className="mt-6 flex flex-col gap-5 border border-brand-navy-700/20 bg-brand-navy-50 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="flex items-center gap-3 sm:gap-5">
             <div className="text-center">
               <div className="font-display text-sm font-semibold text-brand-slate-900 sm:text-base">{origin}</div>
               <div className="text-[0.65rem] uppercase tracking-wide text-brand-slate-500">Origin</div>
             </div>
-            <div className="flex flex-col items-center gap-1 text-brand-green-700">
+            <div className="flex flex-col items-center gap-1 text-brand-navy-700">
               <ModeIcon aria-hidden="true" className="h-4 w-4" />
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </div>
@@ -112,9 +112,9 @@ export function TransitCalculator() {
               <div className="text-[0.65rem] uppercase tracking-wide text-brand-slate-500">Destination</div>
             </div>
           </div>
-          <div className="flex items-center justify-between gap-4 border-t border-brand-green-700/20 pt-4 sm:flex-col sm:items-end sm:gap-1 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
-            <span className="text-xs font-medium uppercase tracking-wide text-brand-green-800">Estimated transit</span>
-            <span className="font-display text-xl font-semibold text-brand-green-800 sm:text-2xl">{estimate}</span>
+          <div className="flex items-center justify-between gap-4 border-t border-brand-navy-700/20 pt-4 sm:flex-col sm:items-end sm:gap-1 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
+            <span className="text-xs font-medium uppercase tracking-wide text-brand-navy-800">Estimated transit</span>
+            <span className="font-display text-xl font-semibold text-brand-navy-800 sm:text-2xl">{estimate}</span>
           </div>
         </div>
 

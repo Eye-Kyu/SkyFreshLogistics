@@ -14,7 +14,7 @@ export const team = [
 ];
 
 export const milestones = [
-  { label: "2015", title: "SkyFresh Founded", description: "Started as a small export coordination service for three vegetable farms near Nairobi." },
+  { label: "2015", title: "Bravair Founded", description: "Started as a small export coordination service for three vegetable farms near Nairobi." },
   { label: "2017", title: "First Major Shipment", description: "Delivered our first consolidated air freight shipment of mixed vegetables to the Netherlands." },
   { label: "2019", title: "GlobalGAP Certification", description: "Achieved GlobalGAP-aligned handling standards, opening EU retail supply chains." },
   { label: "2021", title: "Floriculture Division Launched", description: "Expanded into cut flower export logistics, adding cold storage capacity for stems." },
@@ -55,8 +55,8 @@ export const requiredDocuments = [
 
 export const farmerProgramSteps = [
   { title: "Exporter Registers a Need", description: "Tell us the product, volume, and timeline you're sourcing for." },
-  { title: "SkyFresh Matches Vetted Farmers", description: "We identify growers who meet quality, certification, and capacity requirements." },
-  { title: "SkyFresh Coordinates All Cargo Movement", description: "From collection to delivery, logistics is handled by our team end-to-end." },
+  { title: "Bravair Matches Vetted Farmers", description: "We identify growers who meet quality, certification, and capacity requirements." },
+  { title: "Bravair Coordinates All Cargo Movement", description: "From collection to delivery, logistics is handled by our team end-to-end." },
 ];
 
 export const farmerRequirements = [
@@ -64,7 +64,7 @@ export const farmerRequirements = [
   "GlobalGAP certification (or active progress toward it)",
   "Access to on-farm or nearby cold storage",
   "Demonstrated consistent supply capacity",
-  "Willingness to meet SkyFresh quality grading standards",
+  "Willingness to meet Bravair quality grading standards",
 ];
 
 export const exporterBenefits = [

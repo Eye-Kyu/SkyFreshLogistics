@@ -2,47 +2,50 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #12271c;
+  --foreground: #121826;
 
-  /* Brand palette — placeholder values, swap for final brand guidelines */
-  --brand-green-50: #eefaf1;
-  --brand-green-100: #d7f1de;
-  --brand-green-200: #aee2bd;
-  --brand-green-300: #7ecf98;
-  --brand-green-500: #1f8a4c;
-  --brand-green-600: #17703d;
-  --brand-green-700: #135a32;
-  --brand-green-800: #0f4728;
-  --brand-green-900: #0d3b21;
-  --brand-green-950: #082616;
+  /* Brand palette — derived from the Bravair logo: deep navy primary with a
+     leaf-green accent. Navy 700 and leaf 500 are the exact logo colors. */
+  --brand-navy-50: #eef1f9;
+  --brand-navy-100: #d8dff2;
+  --brand-navy-200: #b0bde5;
+  --brand-navy-300: #8095d3;
+  --brand-navy-400: #4f66b5;
+  --brand-navy-500: #2f479c;
+  --brand-navy-600: #23367f;
+  --brand-navy-700: #1a2a6c;
+  --brand-navy-800: #152257;
+  --brand-navy-900: #111b45;
+  --brand-navy-950: #0a112c;
 
-  --brand-blue-50: #eaf3fb;
-  --brand-blue-100: #cfe4f5;
-  --brand-blue-200: #9cc8ea;
-  --brand-blue-300: #6badde;
-  --brand-blue-500: #0b5fa5;
-  --brand-blue-600: #0a4d86;
-  --brand-blue-700: #083c69;
-  --brand-blue-800: #062f52;
-  --brand-blue-900: #062643;
-  --brand-blue-950: #041a2e;
+  --brand-leaf-50: #eef8ed;
+  --brand-leaf-100: #d6efd4;
+  --brand-leaf-200: #aadfa6;
+  --brand-leaf-300: #7bcb76;
+  --brand-leaf-400: #55b551;
+  --brand-leaf-500: #3ea23c;
+  --brand-leaf-600: #318430;
+  --brand-leaf-700: #276a27;
+  --brand-leaf-800: #20531f;
+  --brand-leaf-900: #1a4319;
+  --brand-leaf-950: #0d2a0d;
 
-  --brand-slate-50: #f7f9f8;
-  --brand-slate-100: #eef2f0;
-  --brand-slate-200: #dde5e1;
-  --brand-slate-300: #c1cdc6;
-  --brand-slate-400: #8b9a93;
-  --brand-slate-500: #6a7a72;
-  --brand-slate-600: #526059;
-  --brand-slate-700: #3c4941;
-  --brand-slate-800: #263630;
-  --brand-slate-900: #16211c;
-  --brand-slate-950: #0c1410;
+  --brand-slate-50: #f7f8fa;
+  --brand-slate-100: #eef0f5;
+  --brand-slate-200: #dde1ea;
+  --brand-slate-300: #c2c8d6;
+  --brand-slate-400: #8d96aa;
+  --brand-slate-500: #6c7689;
+  --brand-slate-600: #545d6e;
+  --brand-slate-700: #3d4553;
+  --brand-slate-800: #272d38;
+  --brand-slate-900: #161b23;
+  --brand-slate-950: #0b0e14;
 
   /* Layered shadow system — soft ambient + tighter contact shadow */
-  --shadow-soft: 0 1px 2px rgba(12, 27, 20, 0.04), 0 8px 24px -12px rgba(12, 27, 20, 0.12);
-  --shadow-lifted: 0 2px 4px rgba(12, 27, 20, 0.06), 0 16px 40px -16px rgba(12, 27, 20, 0.22);
-  --shadow-inset-hairline: inset 0 0 0 1px rgba(12, 27, 20, 0.06);
+  --shadow-soft: 0 1px 2px rgba(11, 17, 32, 0.04), 0 8px 24px -12px rgba(11, 17, 32, 0.12);
+  --shadow-lifted: 0 2px 4px rgba(11, 17, 32, 0.06), 0 16px 40px -16px rgba(11, 17, 32, 0.22);
+  --shadow-inset-hairline: inset 0 0 0 1px rgba(11, 17, 32, 0.06);
 }
 
 @theme inline {
@@ -53,27 +56,29 @@
   --font-display: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  --color-brand-green-50: var(--brand-green-50);
-  --color-brand-green-100: var(--brand-green-100);
-  --color-brand-green-200: var(--brand-green-200);
-  --color-brand-green-300: var(--brand-green-300);
-  --color-brand-green-500: var(--brand-green-500);
-  --color-brand-green-600: var(--brand-green-600);
-  --color-brand-green-700: var(--brand-green-700);
-  --color-brand-green-800: var(--brand-green-800);
-  --color-brand-green-900: var(--brand-green-900);
-  --color-brand-green-950: var(--brand-green-950);
+  --color-brand-navy-50: var(--brand-navy-50);
+  --color-brand-navy-100: var(--brand-navy-100);
+  --color-brand-navy-200: var(--brand-navy-200);
+  --color-brand-navy-300: var(--brand-navy-300);
+  --color-brand-navy-400: var(--brand-navy-400);
+  --color-brand-navy-500: var(--brand-navy-500);
+  --color-brand-navy-600: var(--brand-navy-600);
+  --color-brand-navy-700: var(--brand-navy-700);
+  --color-brand-navy-800: var(--brand-navy-800);
+  --color-brand-navy-900: var(--brand-navy-900);
+  --color-brand-navy-950: var(--brand-navy-950);
 
-  --color-brand-blue-50: var(--brand-blue-50);
-  --color-brand-blue-100: var(--brand-blue-100);
-  --color-brand-blue-200: var(--brand-blue-200);
-  --color-brand-blue-300: var(--brand-blue-300);
-  --color-brand-blue-500: var(--brand-blue-500);
-  --color-brand-blue-600: var(--brand-blue-600);
-  --color-brand-blue-700: var(--brand-blue-700);
-  --color-brand-blue-800: var(--brand-blue-800);
-  --color-brand-blue-900: var(--brand-blue-900);
-  --color-brand-blue-950: var(--brand-blue-950);
+  --color-brand-leaf-50: var(--brand-leaf-50);
+  --color-brand-leaf-100: var(--brand-leaf-100);
+  --color-brand-leaf-200: var(--brand-leaf-200);
+  --color-brand-leaf-300: var(--brand-leaf-300);
+  --color-brand-leaf-400: var(--brand-leaf-400);
+  --color-brand-leaf-500: var(--brand-leaf-500);
+  --color-brand-leaf-600: var(--brand-leaf-600);
+  --color-brand-leaf-700: var(--brand-leaf-700);
+  --color-brand-leaf-800: var(--brand-leaf-800);
+  --color-brand-leaf-900: var(--brand-leaf-900);
+  --color-brand-leaf-950: var(--brand-leaf-950);
 
   --color-brand-slate-50: var(--brand-slate-50);
   --color-brand-slate-100: var(--brand-slate-100);

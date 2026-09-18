@@ -2,18 +2,18 @@ export function ProductCard({
   name,
   category,
   description,
-  tone = "green",
+  tone = "navy",
 }: {
   name: string;
   category: string;
   description: string;
-  tone?: "green" | "blue";
+  tone?: "navy" | "leaf";
 }) {
   const gradient =
-    tone === "blue"
-      ? "from-brand-blue-100 via-brand-blue-50 to-white"
-      : "from-brand-green-100 via-brand-green-50 to-white";
-  const tagTone = tone === "blue" ? "text-brand-blue-700" : "text-brand-green-700";
+    tone === "leaf"
+      ? "from-brand-leaf-100 via-brand-leaf-50 to-white"
+      : "from-brand-navy-100 via-brand-navy-50 to-white";
+  const tagTone = tone === "leaf" ? "text-brand-leaf-700" : "text-brand-navy-700";
 
   return (
     <div className="group flex flex-col overflow-hidden border border-brand-slate-200 bg-white transition-all duration-200 hover:border-brand-slate-300 hover:shadow-lifted">

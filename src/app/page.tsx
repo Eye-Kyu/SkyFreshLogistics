@@ -19,11 +19,11 @@ export default function HomePage() {
             <Eyebrow>{site.shortTagline}</Eyebrow>
             <h1 className="max-w-xl font-display text-[2.75rem] leading-[1.04] font-semibold text-brand-slate-900 text-balance sm:text-6xl lg:text-[3.4rem] xl:text-6xl">
               From farm to global market —{" "}
-              <span className="text-brand-green-700">fresh, fast,</span> and flawlessly
+              <span className="text-brand-navy-700">fresh, fast,</span> and flawlessly
               coordinated.
             </h1>
             <p className="max-w-md text-lg leading-relaxed text-brand-slate-600">
-              SkyFresh moves horticulture and floriculture exports from vetted African
+              Bravair moves horticulture and floriculture exports from vetted African
               farms to buyers worldwide, handling every link in the cold chain along the way.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -56,7 +56,7 @@ export default function HomePage() {
               className="h-72 sm:h-96 lg:h-full lg:min-h-144"
             />
             <div className="absolute bottom-6 left-6 flex items-center gap-3 border border-white/15 bg-brand-slate-950/80 px-4 py-3 text-white backdrop-blur sm:bottom-10 sm:left-10">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-green-600/20 text-brand-green-300">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-navy-600/20 text-brand-navy-300">
                 <Radio aria-hidden="true" className="h-4 w-4" />
               </span>
               <div className="leading-tight">
@@ -74,7 +74,7 @@ export default function HomePage() {
           <SectionHeader
             eyebrow="What We Do"
             title="Everything your export needs, coordinated"
-            subtitle="From sourcing to delivery, SkyFresh handles the logistics so you can focus on trade."
+            subtitle="From sourcing to delivery, Bravair handles the logistics so you can focus on trade."
           />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => {
@@ -100,9 +100,9 @@ export default function HomePage() {
           <div className="grid gap-6 sm:grid-cols-2">
             <Link
               href="/horticulture"
-              className="group bg-grain relative flex h-80 flex-col justify-end overflow-hidden bg-linear-to-br from-brand-green-700 via-brand-green-800 to-brand-green-950 p-8 text-white"
+              className="group bg-grain relative flex h-80 flex-col justify-end overflow-hidden bg-linear-to-br from-brand-navy-700 via-brand-navy-800 to-brand-navy-950 p-8 text-white"
             >
-              <Sprout aria-hidden="true" className="relative z-1 h-8 w-8 text-brand-green-300" strokeWidth={1.5} />
+              <Sprout aria-hidden="true" className="relative z-1 h-8 w-8 text-brand-navy-200" strokeWidth={1.5} />
               <h3 className="relative z-1 mt-4 font-display text-2xl font-semibold">Horticulture</h3>
               <p className="relative z-1 mt-2 text-white/80">Fruits, vegetables, and herbs, export-ready.</p>
               <span className="relative z-1 mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/90">
@@ -112,9 +112,9 @@ export default function HomePage() {
             </Link>
             <Link
               href="/floriculture"
-              className="group bg-grain relative flex h-80 flex-col justify-end overflow-hidden bg-linear-to-br from-brand-blue-700 via-brand-blue-800 to-brand-blue-950 p-8 text-white"
+              className="group bg-grain relative flex h-80 flex-col justify-end overflow-hidden bg-linear-to-br from-brand-leaf-700 via-brand-leaf-800 to-brand-leaf-950 p-8 text-white"
             >
-              <Flower2 aria-hidden="true" className="relative z-1 h-8 w-8 text-brand-blue-300" strokeWidth={1.5} />
+              <Flower2 aria-hidden="true" className="relative z-1 h-8 w-8 text-brand-leaf-300" strokeWidth={1.5} />
               <h3 className="relative z-1 mt-4 font-display text-2xl font-semibold">Floriculture</h3>
               <p className="relative z-1 mt-2 text-white/80">Cut flowers, stems, and fillers, graded to spec.</p>
               <span className="relative z-1 mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/90">

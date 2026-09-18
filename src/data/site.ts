@@ -2,21 +2,21 @@
 // with real details before launch.
 
 export const site = {
-  name: "SkyFresh",
-  fullName: "SkyFresh Logistics Ltd.", // [P]
+  name: "Bravair",
+  fullName: "Bravair Logistics Limited",
   tagline: "From farm to global market — fresh, fast, and flawlessly coordinated.",
-  shortTagline: "Export logistics for fresh produce",
+  shortTagline: "Fresh. Fast. Reliable.",
   phone: "+254 700 000 000", // [P]
   hotline: "+254 700 111 222", // [P] 24/7 cargo hotline
-  email: "info@skyfreshlogistics.com", // [P]
-  quoteEmail: "quotes@skyfreshlogistics.com", // [P]
+  email: "info@bravairlogistics.com",
+  quoteEmail: "quotes@bravairlogistics.com",
   address: "Airport North Road, Utawala, Nairobi, Kenya", // [P]
   hours: "Mon-Fri, 8:00-18:00 EAT (hotline is 24/7)", // [P]
   social: {
-    linkedin: "https://linkedin.com/company/skyfreshlogistics", // [P]
-    twitter: "https://x.com/skyfreshlogistics", // [P]
-    facebook: "https://facebook.com/skyfreshlogistics", // [P]
-    instagram: "https://instagram.com/skyfreshlogistics", // [P]
+    linkedin: "https://linkedin.com/company/bravairlogistics", // [P]
+    twitter: "https://x.com/bravairlogistics", // [P]
+    facebook: "https://facebook.com/bravairlogistics", // [P]
+    instagram: "https://instagram.com/bravairlogistics", // [P]
   },
   mapEmbedSrc:
     "https://www.openstreetmap.org/export/embed.html?bbox=36.8656%2C-1.3399%2C36.9356%2C-1.2799&layer=mapnik", // [P] replace with exact office location
@@ -35,7 +35,7 @@ export const primaryNav = [
     ],
   },
   {
-    label: "Why SkyFresh",
+    label: "Why Bravair",
     href: "/trust",
     children: [
       { label: "How It Works", href: "/how-it-works" },

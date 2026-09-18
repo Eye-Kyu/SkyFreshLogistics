@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Phone } from "lucide-react";
 import { footerLinks, site } from "@/data/site";
@@ -15,9 +16,10 @@ export function Footer() {
     <footer className="bg-grain bg-brand-slate-950 text-white">
       <div className="container-page grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-2">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-brand-green-700 font-display text-sm font-bold text-white">
-              SF
+          <Link href="/" className="flex items-center gap-2.5" aria-label={`${site.fullName} — home`}>
+            {/* The mark is drawn on white, so it sits on a white tile against the dark footer. */}
+            <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-white p-0.5">
+              <Image src="/logo-mark.webp" alt="" width={32} height={32} className="object-contain" />
             </span>
             <span className="font-display text-lg font-semibold text-white">{site.name}</span>
           </Link>
@@ -64,7 +66,7 @@ export function Footer() {
           <h3 className="text-sm font-semibold text-white">24/7 Cargo Hotline</h3>
           <a
             href={`tel:${site.hotline.replace(/\s+/g, "")}`}
-            className="mt-4 inline-flex items-center gap-2 text-lg font-bold text-brand-green-300 hover:text-brand-green-200"
+            className="mt-4 inline-flex items-center gap-2 text-lg font-bold text-brand-leaf-300 hover:text-brand-leaf-200"
           >
             <Phone aria-hidden="true" className="h-4 w-4" />
             {site.hotline}

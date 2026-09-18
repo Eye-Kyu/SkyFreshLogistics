@@ -11,6 +11,19 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description: site.tagline,
+  applicationName: site.fullName,
+  openGraph: {
+    type: "website",
+    siteName: site.fullName,
+    title: `${site.name} — Export Logistics for Fresh Produce`,
+    description: site.tagline,
+    locale: "en_GB",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} — Export Logistics for Fresh Produce`,
+    description: site.tagline,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

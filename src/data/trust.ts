@@ -1,7 +1,7 @@
 export const testimonials = [
   {
     quote:
-      "SkyFresh coordinated our first rose shipment to Amsterdam with zero cold-chain breaks. Their tracking updates meant we never had to call and ask.",
+      "Bravair coordinated our first rose shipment to Amsterdam with zero cold-chain breaks. Their tracking updates meant we never had to call and ask.",
     name: "Amina Wanjiru", // [P]
     role: "Export Manager",
     company: "Nairobi Bloom Exports", // [P]
@@ -15,7 +15,7 @@ export const testimonials = [
   },
   {
     quote:
-      "Documentation used to be our biggest delay. SkyFresh handles phytosanitary certificates and customs so our shipments clear on schedule.",
+      "Documentation used to be our biggest delay. Bravair handles phytosanitary certificates and customs so our shipments clear on schedule.",
     name: "Elena Rossi", // [P]
     role: "Procurement Lead",
     company: "Verdi Fresh Imports", // [P]
@@ -47,7 +47,7 @@ export const trustStats = [
 export const caseStudy = {
   title: "50 Tonnes of Roses to Amsterdam in 48 Hours",
   summary:
-    "When a partner exporter needed to fulfil an unexpected Valentine's Day order spike, SkyFresh coordinated collection from six farms, consolidated cold storage, and secured emergency air freight capacity — delivering the full order to FloraHolland within 48 hours of first contact.",
+    "When a partner exporter needed to fulfil an unexpected Valentine's Day order spike, Bravair coordinated collection from six farms, consolidated cold storage, and secured emergency air freight capacity — delivering the full order to FloraHolland within 48 hours of first contact.",
   metrics: [
     { label: "Farms coordinated", value: "6" },
     { label: "Cargo volume", value: "50 tonnes" },

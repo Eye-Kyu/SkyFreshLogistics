@@ -8,7 +8,7 @@ import { horticultureCategories, horticultureProducts, seasonalCalendar } from "
 export const metadata: Metadata = {
   title: "Horticulture Export",
   description:
-    "Export fresh fruits, vegetables, herbs and exotics with SkyFresh — cold-chain handling from farm to global market.",
+    "Export fresh fruits, vegetables, herbs and exotics with Bravair — cold-chain handling from farm to global market.",
 };
 
 const specs = [
@@ -45,7 +45,7 @@ export default function HorticulturePage() {
 
       <section className="py-16 sm:py-20">
         <Container>
-          <FilterableProductGrid categories={horticultureCategories} products={horticultureProducts} tone="green" />
+          <FilterableProductGrid categories={horticultureCategories} products={horticultureProducts} tone="navy" />
         </Container>
       </section>
 
@@ -55,7 +55,7 @@ export default function HorticulturePage() {
           <div className="grid gap-px overflow-hidden border border-brand-slate-200 bg-brand-slate-200 sm:grid-cols-3">
             {specs.map((spec) => (
               <div key={spec.title} className="flex flex-col gap-3 bg-white p-7">
-                <spec.icon aria-hidden="true" className="h-6 w-6 text-brand-green-700" strokeWidth={1.5} />
+                <spec.icon aria-hidden="true" className="h-6 w-6 text-brand-navy-700" strokeWidth={1.5} />
                 <h3 className="font-display font-semibold text-brand-slate-900">{spec.title}</h3>
                 <p className="text-sm leading-relaxed text-brand-slate-600">{spec.detail}</p>
               </div>
