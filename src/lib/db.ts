@@ -4,7 +4,6 @@ import { Pool } from "pg";
 // every edit, so stash the pool on `globalThis` to avoid leaking a new pool
 // (and a new set of TCP connections) on each hot reload.
 declare global {
-  // eslint-disable-next-line no-var
   var __bravairPgPool: Pool | undefined;
 }
 
@@ -16,8 +15,24 @@ function createPool(): Pool {
   return new Pool({ connectionString });
 }
 
-export const pool = global.__bravairPgPool ?? createPool();
-
-if (process.env.NODE_ENV !== "production") {
-  global.__bravairPgPool = pool;
+function getPool(): Pool {
+  if (!global.__bravairPgPool) {
+    global.__bravairPgPool = createPool();
+  }
+  return global.__bravairPgPool;
 }
+
+// Exported as a Proxy so constructing the real Pool (and checking for
+// DATABASE_URL) is deferred until a request actually runs a query, not when
+// this module is imported. Next.js imports every API route module during
+// `next build`'s "Collect page data" step to analyze it statically — with an
+// eagerly-created pool, that step crashed the build in any environment
+// (CI, a fresh clone) where DATABASE_URL isn't set yet, well before any
+// route actually needed a live connection.
+export const pool: Pool = new Proxy({} as Pool, {
+  get(_target, prop) {
+    const real = getPool();
+    const value = Reflect.get(real, prop, real);
+    return typeof value === "function" ? value.bind(real) : value;
+  },
+});
