@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <section className="flex min-h-[60vh] items-center justify-center py-20">
       <Container className="flex flex-col items-center gap-5 text-center">
-        <span className="flex h-16 w-16 items-center justify-center border border-brand-slate-200 text-brand-green-700">
+        <span className="flex h-16 w-16 items-center justify-center border border-brand-slate-200 text-brand-navy-700">
           <Compass aria-hidden="true" className="h-7 w-7" strokeWidth={1.5} />
         </span>
         <h1 className="font-display text-3xl font-semibold text-brand-slate-900">Page not found</h1>

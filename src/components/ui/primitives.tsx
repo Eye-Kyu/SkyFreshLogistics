@@ -14,16 +14,16 @@ export function Container({
 
 export function Eyebrow({
   children,
-  tone = "green",
+  tone = "navy",
   className = "",
 }: {
   children: ReactNode;
-  tone?: "green" | "blue" | "white";
+  tone?: "navy" | "leaf" | "white";
   className?: string;
 }) {
   const toneStyles: Record<string, string> = {
-    green: "text-brand-green-700",
-    blue: "text-brand-blue-700",
+    navy: "text-brand-navy-700",
+    leaf: "text-brand-leaf-700",
     white: "text-white/80",
   };
   return (
@@ -41,13 +41,13 @@ export function SectionHeader({
   title,
   subtitle,
   align = "center",
-  tone = "green",
+  tone = "navy",
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   align?: "center" | "left";
-  tone?: "green" | "blue" | "white";
+  tone?: "navy" | "leaf" | "white";
 }) {
   const alignment = align === "center" ? "text-center mx-auto items-center" : "text-left items-start";
   const titleTone = tone === "white" ? "text-white" : "text-brand-slate-900";
@@ -69,15 +69,15 @@ type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "invert";
 
 const buttonStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-brand-green-700 text-white shadow-[0_1px_0_rgba(255,255,255,0.15)_inset] hover:bg-brand-green-800 focus-visible:outline-brand-green-700",
+    "bg-brand-navy-700 text-white shadow-[0_1px_0_rgba(255,255,255,0.15)_inset] hover:bg-brand-navy-800 focus-visible:outline-brand-navy-700",
   secondary:
-    "bg-brand-blue-700 text-white shadow-[0_1px_0_rgba(255,255,255,0.15)_inset] hover:bg-brand-blue-800 focus-visible:outline-brand-blue-700",
+    "bg-brand-leaf-700 text-white shadow-[0_1px_0_rgba(255,255,255,0.15)_inset] hover:bg-brand-leaf-800 focus-visible:outline-brand-leaf-700",
   outline:
     "border border-white/50 text-white hover:border-white hover:bg-white/10 focus-visible:outline-white",
   ghost:
-    "border border-brand-slate-300 text-brand-slate-800 hover:border-brand-green-700 hover:text-brand-green-800 focus-visible:outline-brand-green-700",
+    "border border-brand-slate-300 text-brand-slate-800 hover:border-brand-navy-700 hover:text-brand-navy-800 focus-visible:outline-brand-navy-700",
   invert:
-    "bg-white text-brand-green-800 hover:bg-brand-green-50 focus-visible:outline-white",
+    "bg-white text-brand-navy-800 hover:bg-brand-navy-50 focus-visible:outline-white",
 };
 
 export function Button({
@@ -153,19 +153,19 @@ export function Badge({ children, tone = "light" }: { children: ReactNode; tone?
  */
 export function MediaPlaceholder({
   label,
-  tone = "green",
+  tone = "navy",
   className = "",
   icon,
 }: {
   label: string;
-  tone?: "green" | "blue" | "duo";
+  tone?: "navy" | "leaf" | "duo";
   className?: string;
   icon?: ReactNode;
 }) {
   const gradients: Record<string, string> = {
-    green: "from-brand-green-800 via-brand-green-700 to-brand-green-950",
-    blue: "from-brand-blue-800 via-brand-blue-700 to-brand-blue-950",
-    duo: "from-brand-green-800 via-brand-blue-800 to-brand-blue-950",
+    navy: "from-brand-navy-800 via-brand-navy-700 to-brand-navy-950",
+    leaf: "from-brand-leaf-800 via-brand-leaf-700 to-brand-leaf-950",
+    duo: "from-brand-navy-800 via-brand-navy-900 to-brand-leaf-900",
   };
   return (
     <div
@@ -204,7 +204,7 @@ export function TabPills<T extends string>({
           aria-pressed={active === item.id}
           className={`rounded-sm px-4 py-2 text-sm font-medium transition-colors ${
             active === item.id
-              ? "bg-brand-green-800 text-white shadow-soft"
+              ? "bg-brand-navy-800 text-white shadow-soft"
               : "text-brand-slate-600 hover:bg-white hover:text-brand-slate-900"
           }`}
         >

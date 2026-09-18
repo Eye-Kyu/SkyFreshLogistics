@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/primitives";
 import { site } from "@/data/site";
 
-// NOTE for developer: this policy is drafted specifically for SkyFresh's
+// NOTE for developer: this policy is drafted specifically for Bravair's
 // business model (export logistics coordination, farmer sourcing, quote
 // and farmer-application web forms) and references the Kenya Data
 // Protection Act, 2019 and GDPR. It should still be reviewed by qualified
@@ -11,7 +11,7 @@ import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How SkyFresh collects, uses, and protects your information.",
+  description: "How Bravair collects, uses, and protects your information.",
 };
 
 export default function PrivacyPage() {
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
 
         <div className="mt-10 flex max-w-none flex-col gap-6 border-t border-brand-slate-200 pt-10 leading-relaxed text-brand-slate-700">
           <p>
-            {site.fullName} (&quot;SkyFresh&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) provides
+            {site.fullName} (&quot;Bravair&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) provides
             export logistics coordination, cold-chain handling, and farmer sourcing services for
             horticulture and floriculture exporters, buyers, and growers. This policy explains what
             personal information we collect through this website — primarily via our quote request
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
             (GDPR), or a similar law applies, we process your information on the following bases: to
             take steps toward, and perform, a service agreement with you (e.g. arranging a shipment);
             to comply with a legal obligation (e.g. export documentation and customs requirements); and
-            our legitimate interest in operating and improving SkyFresh&apos;s logistics and sourcing
+            our legitimate interest in operating and improving Bravair&apos;s logistics and sourcing
             services, balanced against your rights. Where none of these apply, we will ask for your
             consent.
           </p>
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
 
           <h2 className="font-display text-xl font-semibold text-brand-slate-900">5. International Data Transfers</h2>
           <p>
-            SkyFresh is based in Kenya, and the produce we coordinate is exported to buyers across
+            Bravair is based in Kenya, and the produce we coordinate is exported to buyers across
             Europe, the Middle East, Asia, and beyond. As a result, shipment-related information may be
             transferred to, and processed in, countries outside Kenya — including destination markets
             and the countries where our service providers operate. Where we transfer personal
@@ -162,7 +162,7 @@ export default function PrivacyPage() {
           <p>
             For questions about this policy, or to exercise any of your data protection rights, contact
             us at{" "}
-            <a href={`mailto:${site.email}`} className="text-brand-blue-700 hover:underline">
+            <a href={`mailto:${site.email}`} className="text-brand-leaf-700 hover:underline">
               {site.email}
             </a>{" "}
             or write to us at {site.address}.

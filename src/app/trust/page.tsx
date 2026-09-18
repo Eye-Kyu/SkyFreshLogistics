@@ -5,8 +5,8 @@ import { CTASection } from "@/components/ui/CTASection";
 import { testimonials, certifications, partners, trustStats, caseStudy } from "@/data/trust";
 
 export const metadata: Metadata = {
-  title: "Why SkyFresh",
-  description: "Certifications, testimonials, partners, and proven track record — see why exporters and farmers trust SkyFresh.",
+  title: "Why Bravair",
+  description: "Certifications, testimonials, partners, and proven track record — see why exporters and farmers trust Bravair.",
 };
 
 export default function TrustPage() {
@@ -14,7 +14,7 @@ export default function TrustPage() {
     <>
       <section className="bg-grain bg-brand-slate-950 py-16 sm:py-20">
         <Container className="flex flex-col items-center gap-6 text-center">
-          <Eyebrow tone="white">Why SkyFresh</Eyebrow>
+          <Eyebrow tone="white">Why Bravair</Eyebrow>
           <h1 className="max-w-2xl font-display text-3xl font-semibold text-white sm:text-4xl text-balance">
             Logistics is a trust business. Here&apos;s our proof.
           </h1>
@@ -71,7 +71,7 @@ export default function TrustPage() {
       </section>
 
       {/* Case study — full editorial weight */}
-      <section className="bg-grain bg-brand-blue-950 py-20 sm:py-28">
+      <section className="bg-grain bg-brand-leaf-950 py-20 sm:py-28">
         <Container className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           <div className="flex flex-col gap-6">
             <Eyebrow tone="white">Case Study</Eyebrow>
@@ -88,7 +88,7 @@ export default function TrustPage() {
               ))}
             </div>
           </div>
-          <MediaPlaceholder label="Case study photography" tone="blue" className="h-72 sm:h-96 lg:h-112" />
+          <MediaPlaceholder label="Case study photography" tone="leaf" className="h-72 sm:h-96 lg:h-112" />
         </Container>
       </section>
 
@@ -96,7 +96,7 @@ export default function TrustPage() {
         title="See it for yourself"
         subtitle="Request a quote and experience the coordination our partners rely on."
         primary={{ label: "Get a Quote", href: "/contact" }}
-        tone="blue"
+        tone="leaf"
       />
     </>
   );

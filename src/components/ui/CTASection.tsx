@@ -7,18 +7,18 @@ export function CTASection({
   subtitle,
   primary,
   secondary,
-  tone = "green",
+  tone = "navy",
 }: {
   title: string;
   subtitle?: string;
   primary: { label: ReactNode; href: string };
   secondary?: { label: ReactNode; href: string };
-  tone?: "green" | "blue";
+  tone?: "navy" | "leaf";
 }) {
   const gradient =
-    tone === "green"
-      ? "from-brand-green-900 via-brand-green-800 to-brand-blue-900"
-      : "from-brand-blue-900 via-brand-blue-800 to-brand-green-900";
+    tone === "navy"
+      ? "from-brand-navy-900 via-brand-navy-800 to-brand-leaf-900"
+      : "from-brand-leaf-900 via-brand-leaf-800 to-brand-navy-900";
 
   return (
     <section className={`bg-grain bg-linear-to-br ${gradient}`}>

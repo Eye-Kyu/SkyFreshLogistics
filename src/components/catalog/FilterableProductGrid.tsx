@@ -10,11 +10,11 @@ type Product = { name: string; category: string; description: string };
 export function FilterableProductGrid({
   categories,
   products,
-  tone = "green",
+  tone = "navy",
 }: {
   categories: Category[];
   products: Product[];
-  tone?: "green" | "blue";
+  tone?: "navy" | "leaf";
 }) {
   const [active, setActive] = useState(categories[0].id);
   const filtered =

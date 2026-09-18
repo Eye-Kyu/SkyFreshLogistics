@@ -40,7 +40,7 @@ export default function ContactPage() {
                 <div>
                   <dt className="text-brand-slate-500">Phone</dt>
                   <dd>
-                    <a href={`tel:${site.phone.replace(/\s+/g, "")}`} className="text-brand-blue-700 hover:underline">
+                    <a href={`tel:${site.phone.replace(/\s+/g, "")}`} className="text-brand-leaf-700 hover:underline">
                       {site.phone}
                     </a>
                   </dd>
@@ -48,7 +48,7 @@ export default function ContactPage() {
                 <div>
                   <dt className="text-brand-slate-500">Email</dt>
                   <dd>
-                    <a href={`mailto:${site.email}`} className="text-brand-blue-700 hover:underline">
+                    <a href={`mailto:${site.email}`} className="text-brand-leaf-700 hover:underline">
                       {site.email}
                     </a>
                   </dd>
@@ -59,30 +59,30 @@ export default function ContactPage() {
                 </div>
               </dl>
               <div className="mt-5 flex gap-3 border-t border-brand-slate-200 pt-4 text-sm text-brand-slate-500">
-                <a href={site.social.linkedin} className="hover:text-brand-blue-700">LinkedIn</a>
-                <a href={site.social.twitter} className="hover:text-brand-blue-700">X</a>
-                <a href={site.social.facebook} className="hover:text-brand-blue-700">Facebook</a>
-                <a href={site.social.instagram} className="hover:text-brand-blue-700">Instagram</a>
+                <a href={site.social.linkedin} className="hover:text-brand-leaf-700">LinkedIn</a>
+                <a href={site.social.twitter} className="hover:text-brand-leaf-700">X</a>
+                <a href={site.social.facebook} className="hover:text-brand-leaf-700">Facebook</a>
+                <a href={site.social.instagram} className="hover:text-brand-leaf-700">Instagram</a>
               </div>
             </div>
 
             <div className="overflow-hidden border border-brand-slate-200">
               <iframe
-                title="SkyFresh office location"
+                title="Bravair office location"
                 src={site.mapEmbedSrc}
                 className="h-56 w-full"
                 loading="lazy"
               />
             </div>
 
-            <div className="border border-brand-green-700 bg-brand-green-50 p-6">
-              <h3 className="font-display font-semibold text-brand-green-900">24/7 Cargo Hotline</h3>
-              <p className="mt-1 text-sm text-brand-green-800">
+            <div className="border border-brand-navy-700 bg-brand-navy-50 p-6">
+              <h3 className="font-display font-semibold text-brand-navy-900">24/7 Cargo Hotline</h3>
+              <p className="mt-1 text-sm text-brand-navy-800">
                 For time-sensitive shipments and after-hours emergencies.
               </p>
               <a
                 href={`tel:${site.hotline.replace(/\s+/g, "")}`}
-                className="mt-3 inline-flex items-center gap-2 font-display text-xl font-semibold text-brand-green-900"
+                className="mt-3 inline-flex items-center gap-2 font-display text-xl font-semibold text-brand-navy-900"
               >
                 <Phone aria-hidden="true" className="h-5 w-5" />
                 {site.hotline}

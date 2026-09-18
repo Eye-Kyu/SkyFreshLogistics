@@ -7,10 +7,10 @@ export function Timeline({
     <ol className="relative border-l border-brand-slate-200 pl-8 sm:pl-10">
       {items.map((item, idx) => (
         <li key={idx} className="relative mb-12 last:mb-0">
-          <span className="absolute -left-[2.55rem] top-0.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-brand-green-700 bg-white text-[0.65rem] font-bold text-brand-green-800 sm:-left-[3.05rem]">
+          <span className="absolute -left-[2.55rem] top-0.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-brand-navy-700 bg-white text-[0.65rem] font-bold text-brand-navy-800 sm:-left-[3.05rem]">
             {idx + 1}
           </span>
-          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-blue-700">
+          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-leaf-700">
             {item.label}
           </span>
           <h3 className="mt-1.5 font-display text-lg font-semibold text-brand-slate-900">{item.title}</h3>
