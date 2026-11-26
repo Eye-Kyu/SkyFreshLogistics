@@ -4,19 +4,83 @@ import { FormEvent, useState } from "react";
 import { CircleCheck } from "lucide-react";
 import { QuoteEstimate } from "./QuoteEstimate";
 
-// NOTE for developer: the instant estimate (QuoteEstimate) is live against
-// /api/quotes/price, but the quote *request* itself still simulates submission
-// client-side. Wire `handleSubmit` up to your form backend (API route, CRM, or
-// email service such as SendGrid/Postmark, or a Zapier/Make webhook) before
-// launch; the estimate's fields are named `estimate*` so they arrive with it.
+// Submits to POST /api/quote-requests, which stores the lead for Sales (see
+// GET /api/quote-requests). The optional instant estimate's inputs (fields named
+// `estimate*`, from QuoteEstimate) are sent along as `lane`; the server re-prices
+// them itself rather than trusting a price from the browser.
+
+function text(fd: FormData, name: string): string {
+  const v = fd.get(name);
+  return typeof v === "string" ? v.trim() : "";
+}
+
+/** The estimate panel's inputs, or undefined if the customer didn't fill it in. */
+function laneFromForm(fd: FormData) {
+  const destination = text(fd, "estimateDestination");
+  const commodity = text(fd, "estimateCommodity");
+  const weight = text(fd, "estimateGrossWeightKg");
+  if (!destination || !commodity || !weight) return undefined;
+
+  const dimensions = [];
+  for (let i = 0; fd.has(`estimateDimensions[${i}].pieces`); i++) {
+    const row = (["pieces", "lengthCm", "widthCm", "heightCm"] as const).map((f) => text(fd, `estimateDimensions[${i}].${f}`));
+    if (row.every((v) => v === "")) continue; // blank line
+    const [pieces, lengthCm, widthCm, heightCm] = row.map(Number);
+    dimensions.push({ pieces, lengthCm, widthCm, heightCm });
+  }
+
+  return {
+    origin: text(fd, "estimateOrigin"),
+    destination,
+    commodity,
+    airline: text(fd, "estimateAirline") || null, // "" = any airline
+    readyDate: text(fd, "estimateReadyDate"),
+    grossWeightKg: Number(weight),
+    dimensions,
+  };
+}
 
 export function QuoteForm() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
     setStatus("submitting");
-    setTimeout(() => setStatus("success"), 600);
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/quote-requests", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: text(fd, "name"),
+          company: text(fd, "company"),
+          email: text(fd, "email"),
+          phone: text(fd, "phone"),
+          productType: text(fd, "productType"),
+          estimatedVolume: text(fd, "volume"),
+          destination: text(fd, "destination"),
+          message: text(fd, "message"),
+          website: text(fd, "website"),
+          lane: laneFromForm(fd),
+        }),
+      });
+      if (res.ok) {
+        setStatus("success");
+        return;
+      }
+      const body = (await res.json().catch(() => ({}))) as { error?: string };
+      setErrorMessage(
+        res.status === 400 && body.error
+          ? `Please check the form: ${body.error}.`
+          : "Something went wrong sending your request. Please try again, or call our hotline."
+      );
+    } catch {
+      setErrorMessage("We couldn't reach our server. Check your connection and try again, or call our hotline.");
+    }
+    setStatus("error");
   }
 
   if (status === "success") {
@@ -32,7 +96,7 @@ export function QuoteForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 border border-brand-slate-200 bg-white p-6 sm:p-8">
+    <form onSubmit={handleSubmit} className="relative grid gap-5 border border-brand-slate-200 bg-white p-6 sm:p-8">
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Full name" name="name" required />
         <Field label="Company" name="company" required />
@@ -63,6 +127,19 @@ export function QuoteForm() {
           placeholder="Tell us anything else that will help us prepare your quote"
         />
       </label>
+      {/* Honeypot: hidden from people and assistive tech; bots that fill every
+          field get a normal-looking success and their submission is dropped. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+      {status === "error" ? (
+        <p role="alert" className="text-sm text-red-700">
+          {errorMessage}
+        </p>
+      ) : null}
       <button
         type="submit"
         disabled={status === "submitting"}

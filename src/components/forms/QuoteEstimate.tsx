@@ -7,7 +7,7 @@ import { Calculator, Plus, Trash2 } from "lucide-react";
 // GET /api/lists (dropdowns) and POST /api/quotes/price (public pricing: approved
 // rate + freight total only, never buy rates or margins). It sits inside the
 // QuoteForm's <form>, and its fields carry `name`s, so the lane details travel
-// with the quote request once that form is wired to a backend.
+// with the quote request (POST /api/quote-requests).
 
 interface Lists {
   origins: { code: string; name: string }[];

@@ -136,6 +136,81 @@ function run<T>(body: unknown, parse: (b: Record<string, unknown>) => T): Valida
   }
 }
 
+// --- Website quote requests (POST /api/quote-requests) ---------------------
+
+/** The instant-estimate panel's inputs. `airline` null means "any airline". */
+export interface EstimateLane {
+  origin: string;
+  destination: string;
+  commodity: string;
+  airline: string | null;
+  readyDate: string;
+  grossWeightKg: number;
+  dimensions: DimensionLine[];
+}
+
+export interface QuoteRequestInput {
+  name: string;
+  company: string;
+  email: string;
+  phone: string;
+  productType: string | null;
+  estimatedVolume: string | null;
+  destination: string;
+  message: string | null;
+  /** Null when the estimate panel was left empty or filled in invalidly — a
+   * half-finished estimate must never cost us the lead itself. */
+  lane: EstimateLane | null;
+  /** True when the honeypot field was filled in (almost certainly a bot). */
+  isSpam: boolean;
+}
+
+function boundedString(body: Record<string, unknown>, field: string, max: number, required: true): string;
+function boundedString(body: Record<string, unknown>, field: string, max: number, required: false): string | null;
+function boundedString(body: Record<string, unknown>, field: string, max: number, required: boolean): string | null {
+  const v = required ? requiredString(body, field) : optionalString(body, field);
+  if (v !== null && v.length > max) throw new InputError(`${field} must be at most ${max} characters`);
+  return v;
+}
+
+function parseLane(v: unknown): EstimateLane | null {
+  if (!isRecord(v)) return null;
+  try {
+    return {
+      origin: requiredString(v, "origin"),
+      destination: requiredString(v, "destination"),
+      commodity: requiredString(v, "commodity"),
+      airline: optionalString(v, "airline"),
+      readyDate: isoDate(v.readyDate, "readyDate"),
+      grossWeightKg: positiveNumber(v.grossWeightKg, "grossWeightKg"),
+      dimensions: v.dimensions === undefined ? [] : dimensions(v.dimensions),
+    };
+  } catch (err) {
+    if (err instanceof InputError) return null;
+    throw err;
+  }
+}
+
+/** Body of POST /api/quote-requests. */
+export function parseQuoteRequestBody(body: unknown): Validated<QuoteRequestInput> {
+  return run(body, (b) => {
+    const email = boundedString(b, "email", 254, true);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new InputError("email must be a valid email address");
+    return {
+      name: boundedString(b, "name", 200, true),
+      company: boundedString(b, "company", 200, true),
+      email,
+      phone: boundedString(b, "phone", 50, true),
+      productType: boundedString(b, "productType", 100, false),
+      estimatedVolume: boundedString(b, "estimatedVolume", 200, false),
+      destination: boundedString(b, "destination", 200, true),
+      message: boundedString(b, "message", 5000, false),
+      lane: parseLane(b.lane),
+      isSpam: typeof b.website === "string" && b.website.trim() !== "",
+    };
+  });
+}
+
 /** Body of POST /api/quotes/price. */
 export function parsePriceQuoteBody(body: unknown): Validated<PriceQuoteInput> {
   return run(body, parsePriceFields);

@@ -18,6 +18,7 @@ cp .env.example .env.local
 # 3. Apply the schema (migrations in order)
 psql "$DATABASE_URL" -f db/migrations/0001_init.sql
 psql "$DATABASE_URL" -f db/migrations/0002_quote_sequences.sql
+psql "$DATABASE_URL" -f db/migrations/0003_quote_requests.sql
 
 # 4. (Re-)extract from the workbook, if seed.json needs regenerating
 python db/seed-data/extract_from_xlsx.py "/path/to/BLL_QUOTES_SYSTEM.xlsx"
@@ -170,6 +171,13 @@ through to the QUOTE sheet... never the buy rate, surcharges, or margin themselv
 - `POST /api/quotes` — always requires a valid `x-internal-api-key` header; this is the
   write path that permanently logs a quote code/number (the API equivalent of pasting a
   row into `QUOTE_LOG` as values).
+- `POST /api/quote-requests` — public: the contact page's "Request a Quote" form. Stores
+  the lead in `quote_requests` (migration 0003) with any instant-estimate inputs
+  (`lane`) and the server's own re-priced public estimate (`estimate`); a missing,
+  invalid or unpriceable estimate never blocks the lead. A filled-in `website`
+  honeypot field gets a normal 201 but is not stored.
+- `GET /api/quote-requests?status=new&limit=50` — requires a valid `x-internal-api-key`
+  header; lists requests newest first (`limit` max 200).
 - Both quote endpoints return **422** with `rateFound: false` and no price when no
   Active, in-date rate matches (the workbook's "RATE NOT FOUND OR EXPIRED" case), so an
   unpriced lane is never quoted or logged.
