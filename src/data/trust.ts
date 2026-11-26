@@ -47,7 +47,7 @@ export const trustStats = [
 export const caseStudy = {
   title: "50 Tonnes of Roses to Amsterdam in 48 Hours",
   summary:
-    "When a partner exporter needed to fulfil an unexpected Valentine's Day order spike, Bravair coordinated collection from six farms, consolidated cold storage, and secured emergency air freight capacity — delivering the full order to FloraHolland within 48 hours of first contact.",
+    "When a partner exporter needed to fulfil an unexpected Valentine's Day order spike, Bravair coordinated collection from six farms, consolidated cold storage, and secured emergency air freight capacity, delivering the full order to FloraHolland within 48 hours of first contact.",
   metrics: [
     { label: "Farms coordinated", value: "6" },
     { label: "Cargo volume", value: "50 tonnes" },

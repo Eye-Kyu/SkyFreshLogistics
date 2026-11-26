@@ -1,8 +1,9 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import { TabPills } from "./primitives";
+import { Segmented } from "./primitives";
 
+// No page uses this since the redesign; kept pending the owner's OK to delete.
 export function Tabs<T extends string>({
   tabs,
   defaultTab,
@@ -16,8 +17,8 @@ export function Tabs<T extends string>({
 
   return (
     <div>
-      <TabPills items={tabs} active={active} onChange={setActive} />
-      <div className="mt-8">{children(active)}</div>
+      <Segmented items={tabs} active={active} onChange={setActive} label="Choose a view" />
+      <div>{children(active)}</div>
     </div>
   );
 }

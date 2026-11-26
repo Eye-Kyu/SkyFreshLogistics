@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Accordion } from "@/components/ui/Accordion";
-import { TabPills } from "@/components/ui/primitives";
+import { Segmented } from "@/components/ui/primitives";
 import { faqCategories, faqs, type FaqCategory } from "@/data/faq";
 
 export function FaqSection() {
@@ -10,11 +10,9 @@ export function FaqSection() {
   const filtered = active === "all" ? faqs : faqs.filter((f) => f.category === active);
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="sm:self-center">
-        <TabPills items={faqCategories} active={active} onChange={setActive} />
-      </div>
-      <Accordion items={filtered} />
+    <div>
+      <Segmented items={faqCategories} active={active} onChange={setActive} label="Filter questions by topic" />
+      <Accordion key={active} items={filtered} />
     </div>
   );
 }

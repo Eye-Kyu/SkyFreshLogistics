@@ -45,7 +45,7 @@ export const serviceDetails = [
     icon: "package" as const,
     title: "Export Logistics",
     description:
-      "We manage the full journey from farm gate to final port of discharge — consolidating cargo, booking freight capacity on air and sea carriers, and ensuring produce is packed to international export standards. Our operations team coordinates pickup schedules around harvest windows so nothing sits waiting.",
+      "We manage the full journey from farm gate to final port of discharge: consolidating cargo, booking freight capacity on air and sea carriers, and ensuring produce is packed to international export standards. Our operations team coordinates pickup schedules around harvest windows so nothing sits waiting.",
     bullets: [
       "End-to-end cargo handling and coordination",
       "Export-grade packaging standards",
@@ -73,7 +73,7 @@ export const serviceDetails = [
     icon: "map-pin" as const,
     title: "Real-Time Tracking",
     description:
-      "Every shipment is monitored from collection to delivery. Temperature sensors, GPS location pings, and automated status alerts mean you always know exactly where your cargo is and what condition it's in — no more waiting on phone calls for updates.",
+      "Every shipment is monitored from collection to delivery. Temperature sensors, GPS location pings, and automated status alerts mean you always know exactly where your cargo is and what condition it's in, with no more waiting on phone calls for updates.",
     bullets: [
       "Live temperature and humidity monitoring",
       "GPS-tracked cargo location",
@@ -139,7 +139,7 @@ export const servicePackages = [
   },
   {
     name: "Full Coordination",
-    description: "Our most popular tier — end-to-end handling of sourcing, cold chain, and delivery.",
+    description: "Our most popular tier: end-to-end handling of sourcing, cold chain, and delivery.",
     features: [
       "Everything in Basic Logistics",
       "Farmer sourcing & vetting",

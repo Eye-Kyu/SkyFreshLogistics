@@ -1,59 +1,46 @@
 import type { Metadata } from "next";
 import { Check } from "lucide-react";
-import { Container, SectionHeader } from "@/components/ui/primitives";
-import { Timeline } from "@/components/ui/Timeline";
+import { Container, CloseBand, PageIntro } from "@/components/ui/primitives";
+import { ProcessChapter } from "@/components/motion/ProcessChapter";
 import { TransitCalculator } from "@/components/tools/TransitCalculator";
-import { CTASection } from "@/components/ui/CTASection";
 import { shippingModeIconMap } from "@/components/ui/icon-map";
 import { processSteps, shippingModes, requiredDocuments } from "@/data/company";
 
 export const metadata: Metadata = {
-  title: "How It Works",
+  title: "How it works",
   description: "The full Bravair process from inquiry to delivery, shipping modes, and required export documents.",
 };
 
 export default function HowItWorksPage() {
-  const timelineItems = processSteps.map((step, idx) => ({
-    label: `Step ${idx + 1}`,
-    title: step.title,
-    description: step.description,
-  }));
-
   return (
     <>
-      <section className="border-b border-brand-slate-200 py-16 sm:py-20">
+      <PageIntro
+        title="From first contact to final delivery"
+        lead="A transparent six-step process, so you always know what happens next."
+      />
+
+      <section className="section">
         <Container>
-          <SectionHeader
-            align="left"
-            eyebrow="How It Works"
-            title="From first contact to final delivery"
-            subtitle="A transparent six-step process, so you always know what happens next."
-          />
+          <ProcessChapter steps={processSteps} label="The six steps of a Bravair shipment" />
         </Container>
       </section>
 
-      <section className="py-20 sm:py-28">
-        <Container className="mx-auto max-w-2xl">
-          <Timeline items={timelineItems} />
-        </Container>
-      </section>
-
-      {/* Shipping modes */}
-      <section className="bg-brand-slate-50 py-16 sm:py-20">
-        <Container className="flex flex-col gap-10">
-          <SectionHeader eyebrow="Shipping Modes" title="Choose the right mode for your cargo" />
-          <div className="grid gap-px overflow-hidden border border-brand-slate-200 bg-brand-slate-200 sm:grid-cols-3">
+      <section className="band section">
+        <Container>
+          <div className="head head--split">
+            <h2>Three ways to move it</h2>
+            <p className="lead">Choose by shelf life, volume and how soon the buyer needs it.</p>
+          </div>
+          <div className="modes">
             {shippingModes.map((mode) => {
               const Icon = shippingModeIconMap[mode.icon];
               return (
-                <div key={mode.title} className="relative flex flex-col gap-4 bg-white p-7">
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-0.75 bg-brand-leaf-700"
-                  />
-                  <Icon aria-hidden="true" className="h-7 w-7 text-brand-leaf-700" strokeWidth={1.5} />
-                  <h3 className="font-display font-semibold text-brand-slate-900">{mode.title}</h3>
-                  <p className="text-sm leading-relaxed text-brand-slate-600">{mode.detail}</p>
+                <div key={mode.title} data-reveal>
+                  <h3 className="with-icon">
+                    <Icon aria-hidden="true" size={24} strokeWidth={1.5} />
+                    {mode.title}
+                  </h3>
+                  <p>{mode.detail}</p>
                 </div>
               );
             })}
@@ -61,42 +48,46 @@ export default function HowItWorksPage() {
         </Container>
       </section>
 
-      {/* Calculator */}
-      <section className="py-20 sm:py-28">
-        <Container className="mx-auto max-w-3xl">
-          <TransitCalculator />
+      <section className="section">
+        <Container>
+          <div className="split split--even" style={{ alignItems: "start" }}>
+            <div className="stack-lg">
+              <h2>How long it takes</h2>
+              <p className="lead">Pick a lane and a mode for an indicative transit time.</p>
+            </div>
+            <div data-reveal>
+              <TransitCalculator />
+            </div>
+          </div>
         </Container>
       </section>
 
-      {/* Documents checklist */}
-      <section className="bg-brand-slate-50 py-16 sm:py-20">
-        <Container className="mx-auto flex max-w-2xl flex-col gap-8">
-          <SectionHeader eyebrow="Paperwork" title="Required Documents Checklist" />
-          <ul className="flex flex-col divide-y divide-brand-slate-200 border-y border-brand-slate-200">
-            {requiredDocuments.map((doc) => (
-              <li
-                key={doc}
-                className="flex items-center gap-3 bg-white px-5 py-4 text-sm font-medium text-brand-slate-800"
-              >
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center border border-brand-navy-700 text-brand-navy-700">
-                  <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />
-                </span>
-                {doc}
-              </li>
-            ))}
-          </ul>
-          <p className="text-sm text-brand-slate-500">
-            Bravair prepares and manages all of the above on your behalf as part of our
-            compliance &amp; documentation service.
-          </p>
+      <section className="section band--soft">
+        <Container>
+          <div className="grid-12">
+            <div className="g-aside stack-lg">
+              <h2>The paperwork we handle</h2>
+              <p className="muted">
+                Bravair prepares and manages all of these on your behalf as part of our compliance and documentation service.
+              </p>
+            </div>
+            <ul className="doclist g-main" data-reveal>
+              {requiredDocuments.map((doc) => (
+                <li key={doc}>
+                  <Check aria-hidden="true" size={20} strokeWidth={2.5} />
+                  {doc}
+                </li>
+              ))}
+            </ul>
+          </div>
         </Container>
       </section>
 
-      <CTASection
+      <CloseBand
         title="Have questions about the process?"
-        subtitle="Check our FAQ or reach out directly — we're happy to walk you through it."
-        primary={{ label: "View FAQ", href: "/faq" }}
-        secondary={{ label: "Contact Us", href: "/contact" }}
+        line="Check the answers first, or talk to the team directly."
+        primary={{ label: "Contact us", href: "/contact" }}
+        secondary={{ label: "Read the FAQ", href: "/faq" }}
       />
     </>
   );

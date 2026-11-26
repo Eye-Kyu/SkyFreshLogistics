@@ -1,8 +1,8 @@
 export const coreValues = [
   { icon: "shield" as const, title: "Integrity", description: "We handle every shipment and every partnership honestly, with clear communication at every step." },
-  { icon: "clock" as const, title: "Reliability", description: "Harvest windows and flight schedules don't wait — neither do we. Consistency is the product." },
+  { icon: "clock" as const, title: "Reliability", description: "Harvest windows and flight schedules don't wait, and neither do we. Consistency is the product." },
   { icon: "leaf" as const, title: "Quality", description: "From grading to cold storage, we protect the quality your buyers and your reputation depend on." },
-  { icon: "handshake" as const, title: "Partnership", description: "We succeed when our growers, exporters, and buyers succeed — the relationship outlasts the shipment." },
+  { icon: "handshake" as const, title: "Partnership", description: "We succeed when our growers, exporters, and buyers succeed. The relationship outlasts the shipment." },
 ];
 
 export type CoreValueIconKey = (typeof coreValues)[number]["icon"];
@@ -13,17 +13,19 @@ export const team = [
   { name: "Papius", role: "Head of Compliance", bio: "Manages certifications, permits, and customs relationships.", initials: "SO" }, // [P]
 ];
 
-export const milestones = [
+// `unverified` milestones state figures the owner has not confirmed yet; pages
+// hide them until the flag is removed.
+export const milestones: { label: string; title: string; description: string; unverified?: boolean }[] = [
   { label: "2015", title: "Bravair Founded", description: "Started as a small export coordination service for three vegetable farms near Nairobi." },
   { label: "2017", title: "First Major Shipment", description: "Delivered our first consolidated air freight shipment of mixed vegetables to the Netherlands." },
   { label: "2019", title: "GlobalGAP Certification", description: "Achieved GlobalGAP-aligned handling standards, opening EU retail supply chains." },
   { label: "2021", title: "Floriculture Division Launched", description: "Expanded into cut flower export logistics, adding cold storage capacity for stems." },
-  { label: "2023", title: "Farmer Sourcing Program", description: "Launched the formal farmer vetting and matching program now serving 450+ growers." },
-  { label: "2025", title: "28 Export Markets", description: "Grew to serve buyers across Europe, the Middle East, Asia, and Russia." },
+  { label: "2023", title: "Farmer Sourcing Program", description: "Launched the formal farmer vetting and matching program now serving 450+ growers.", unverified: true },
+  { label: "2025", title: "28 Export Markets", description: "Grew to serve buyers across Europe, the Middle East, Asia, and Russia.", unverified: true },
 ]; // [P] verify all dates and milestones
 
 export const missionVision = {
-  mission: "To move fresh produce from African farms to global markets without compromising quality, speed, or trust — for every grower and every buyer we work with.",
+  mission: "To move fresh produce from African farms to global markets without compromising quality, speed, or trust, for every grower and every buyer we work with.",
   vision: "To be the most trusted logistics partner connecting African horticulture and floriculture to the world.",
 };
 
