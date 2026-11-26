@@ -63,24 +63,28 @@ async function main() {
   try {
     await client.query("begin");
 
-    // Wipe existing reference data so re-running the seed is idempotent.
-    // Order matters: children before parents.
-    await client.query(
-      "truncate table rates, surcharges, commodity_subtypes, commodities, airlines, destinations, origins restart identity cascade"
-    );
+    // Re-running the seed must never touch logged quotes. `quotes` has foreign
+    // keys into origins, destinations, commodities, commodity_subtypes and
+    // airlines, so a `truncate ... cascade` on those tables would silently
+    // empty the quote log too. Only rates, surcharges and settings (which
+    // nothing references) are wiped and reloaded; the lookup tables are
+    // upserted so their ids stay stable for existing quotes.
+    await client.query("truncate table rates, surcharges restart identity");
     await client.query("delete from settings");
 
     for (const code of seed.origins) {
-      await client.query("insert into origins (code, name) values ($1, $1)", [code]);
+      await client.query("insert into origins (code, name) values ($1, $1) on conflict (code) do nothing", [code]);
     }
     for (const code of seed.destinations) {
-      await client.query("insert into destinations (code, name) values ($1, $1)", [code]);
+      await client.query("insert into destinations (code, name) values ($1, $1) on conflict (code) do nothing", [code]);
     }
 
     const commodityIds = new Map<string, number>();
     for (const name of seed.commodities) {
       const { rows } = await client.query<{ id: number }>(
-        "insert into commodities (name) values ($1) returning id",
+        // "do update" (a no-op) rather than "do nothing" so `returning` yields the
+        // existing row's id on conflict.
+        "insert into commodities (name) values ($1) on conflict (name) do update set name = excluded.name returning id",
         [name]
       );
       commodityIds.set(name, rows[0].id);
@@ -89,7 +93,7 @@ async function main() {
     const airlineIds = new Map<string, number>();
     for (const name of seed.airlines) {
       const { rows } = await client.query<{ id: number }>(
-        "insert into airlines (name) values ($1) returning id",
+        "insert into airlines (name) values ($1) on conflict (name) do update set name = excluded.name returning id",
         [name]
       );
       airlineIds.set(name, rows[0].id);
@@ -100,7 +104,7 @@ async function main() {
       const commodityId = commodityIds.get(commodityName);
       if (!commodityId) throw new Error(`subtype group references unknown commodity: ${commodityName}`);
       for (const subtypeName of subtypes) {
-        await client.query("insert into commodity_subtypes (commodity_id, name) values ($1, $2)", [
+        await client.query("insert into commodity_subtypes (commodity_id, name) values ($1, $2) on conflict (commodity_id, name) do nothing", [
           commodityId,
           subtypeName,
         ]);

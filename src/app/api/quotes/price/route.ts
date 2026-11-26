@@ -44,6 +44,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "dimensions must be an array" }, { status: 400 });
   }
 
+  const url = new URL(request.url);
+  const wantsInternal = url.searchParams.get("internal") === "1";
+  const internal = wantsInternal && isInternalRequest(request);
+
   const result = await priceQuote(pool, {
     origin: body.origin,
     destination: body.destination,
@@ -52,12 +56,21 @@ export async function POST(request: Request) {
     readyDate: body.readyDate,
     grossWeightKg: Number(body.grossWeightKg),
     dimensions: body.dimensions,
-    managementOverrideRateUsdKg: body.managementOverrideRateUsdKg ?? null,
+    // The override is a management decision: only honour it on internal
+    // requests, or any public caller could set their own rate (and an override
+    // of 0 would expose the route's confidential minimum charge).
+    managementOverrideRateUsdKg: internal ? body.managementOverrideRateUsdKg ?? null : null,
   });
 
-  const url = new URL(request.url);
-  const wantsInternal = url.searchParams.get("internal") === "1";
-  const internal = wantsInternal && isInternalRequest(request);
+  // With no matching Active rate the engine falls back to a buy rate of 0,
+  // which still produces a plausible-looking price (surcharges + fallback
+  // margin, floored at GLOBAL_MIN_CHARGE_USD). Refuse rather than quote it.
+  if (!result.rateFound) {
+    return NextResponse.json(
+      { rateFound: false, error: "no active rate for this route, commodity, airline and ready date" },
+      { status: 422 }
+    );
+  }
 
   if (!internal) {
     return NextResponse.json({

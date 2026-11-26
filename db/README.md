@@ -156,7 +156,17 @@ through to the QUOTE sheet... never the buy rate, surcharges, or margin themselv
   `chargeableWeightKg`, `weightBasis`, `approvedFreightRateUsdKg`, `freightTotalUsd`.
   With a valid `x-internal-api-key` header **and** `?internal=1`, returns the full
   breakdown (buy rate, negotiated/effective rate, surcharge components, margin,
-  minimum charge).
+  minimum charge). `managementOverrideRateUsdKg` is only honoured on such an internal
+  request; on a public request it is ignored.
 - `POST /api/quotes` — always requires a valid `x-internal-api-key` header; this is the
   write path that permanently logs a quote code/number (the API equivalent of pasting a
   row into `QUOTE_LOG` as values).
+- Both quote endpoints return **422** with `rateFound: false` and no price when no
+  Active, in-date rate matches (the workbook's "RATE NOT FOUND OR EXPIRED" case), so an
+  unpriced lane is never quoted or logged.
+
+`npm run seed` is safe to re-run against a database with logged quotes: it reloads
+`rates`, `surcharges` and `settings`, and upserts the lookup tables (origins,
+destinations, commodities, subtypes, airlines) without deleting them, since `quotes`
+references their rows. Lookup entries removed from the workbook are therefore not
+deleted automatically.

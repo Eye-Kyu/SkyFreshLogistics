@@ -80,6 +80,16 @@ export async function POST(request: Request) {
     managementOverrideRateUsdKg: body.managementOverrideRateUsdKg ?? null,
   });
 
+  // With no matching Active rate the engine falls back to a buy rate of 0,
+  // which still produces a plausible-looking price (surcharges + fallback
+  // margin, floored at GLOBAL_MIN_CHARGE_USD). Never log such a quote.
+  if (!priced.rateFound) {
+    return NextResponse.json(
+      { rateFound: false, error: "no active rate for this route, commodity, airline and ready date" },
+      { status: 422 }
+    );
+  }
+
   const serviceChargesTotal = sumServiceCharges(body.serviceCharges);
   const totalCustomerQuoteUsd = priced.freightTotalUsd + serviceChargesTotal;
 
