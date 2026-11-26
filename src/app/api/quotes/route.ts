@@ -1,47 +1,32 @@
 import { NextResponse } from "next/server";
+import type { PoolClient } from "pg";
 import { pool } from "@/lib/db";
 import { isInternalRequest } from "@/lib/internalAuth";
-import { priceQuote, type DimensionLine } from "@/lib/pricing";
-import { buildQuoteCode, buildQuoteNumber } from "@/lib/quoteCode";
+import { priceQuote } from "@/lib/pricing";
+import {
+  QUOTE_TIMEZONE,
+  buildQuoteCode,
+  buildQuoteNumber,
+  quoteCodePeriod,
+  quoteNumberPeriod,
+} from "@/lib/quoteCode";
+import { parseCreateQuoteBody, type ServiceCharges } from "@/lib/quoteInput";
 
-interface ServiceCharges {
-  documentation?: number;
-  coordination?: number;
-  handling?: number;
-  coldChain?: number;
-  customsFacilitation?: number;
-  deliveryCollection?: number;
-  otherServices?: number;
+function sumServiceCharges(charges: ServiceCharges): number {
+  const total = Object.values(charges).reduce((sum: number, v) => sum + (v ?? 0), 0);
+  return Math.round((total + Number.EPSILON) * 100) / 100;
 }
 
-interface CreateQuoteBody {
-  customer?: string;
-  salesperson?: string;
-  origin: string;
-  destination: string;
-  commodity: string;
-  commoditySubtype?: string;
-  airline: string;
-  readyDate: string;
-  grossWeightKg: number;
-  dimensions: DimensionLine[];
-  managementOverrideRateUsdKg?: number | null;
-  serviceCharges?: ServiceCharges;
-  notes?: string;
-}
-
-const REQUIRED_FIELDS: (keyof CreateQuoteBody)[] = [
-  "origin",
-  "destination",
-  "commodity",
-  "airline",
-  "readyDate",
-  "grossWeightKg",
-];
-
-function sumServiceCharges(charges: ServiceCharges | undefined): number {
-  if (!charges) return 0;
-  return Object.values(charges).reduce((sum: number, v) => sum + (Number(v) || 0), 0);
+/** Reserves the next value of a quote counter. The upsert's row lock serializes
+ * concurrent requests for the same period until this transaction ends. */
+async function nextSequence(client: PoolClient, scope: "code" | "number", period: string): Promise<number> {
+  const { rows } = await client.query<{ last_value: number }>(
+    `insert into quote_sequences (scope, period, last_value) values ($1, $2, 1)
+     on conflict (scope, period) do update set last_value = quote_sequences.last_value + 1
+     returning last_value`,
+    [scope, period]
+  );
+  return rows[0].last_value;
 }
 
 // POST /api/quotes — logs a finalized quotation, the API equivalent of copying the
@@ -54,31 +39,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "internal API key required" }, { status: 401 });
   }
 
-  let body: CreateQuoteBody;
+  let raw: unknown;
   try {
-    body = await request.json();
+    raw = await request.json();
   } catch {
     return NextResponse.json({ error: "invalid JSON body" }, { status: 400 });
   }
 
-  const missing = REQUIRED_FIELDS.filter((field) => body[field] === undefined || body[field] === null || body[field] === "");
-  if (missing.length > 0) {
-    return NextResponse.json({ error: `missing required field(s): ${missing.join(", ")}` }, { status: 400 });
+  const parsed = parseCreateQuoteBody(raw);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
-  if (!Array.isArray(body.dimensions)) {
-    return NextResponse.json({ error: "dimensions must be an array" }, { status: 400 });
-  }
+  const body = parsed.value;
 
-  const priced = await priceQuote(pool, {
-    origin: body.origin,
-    destination: body.destination,
-    commodity: body.commodity,
-    airline: body.airline,
-    readyDate: body.readyDate,
-    grossWeightKg: Number(body.grossWeightKg),
-    dimensions: body.dimensions,
-    managementOverrideRateUsdKg: body.managementOverrideRateUsdKg ?? null,
-  });
+  const priced = await priceQuote(pool, body);
 
   // With no matching Active rate the engine falls back to a buy rate of 0,
   // which still produces a plausible-looking price (surcharges + fallback
@@ -91,21 +65,20 @@ export async function POST(request: Request) {
   }
 
   const serviceChargesTotal = sumServiceCharges(body.serviceCharges);
-  const totalCustomerQuoteUsd = priced.freightTotalUsd + serviceChargesTotal;
+  const totalCustomerQuoteUsd = Math.round((priced.freightTotalUsd + serviceChargesTotal + Number.EPSILON) * 100) / 100;
 
   const client = await pool.connect();
   try {
     await client.query("begin");
 
-    // A single advisory lock serializes quote creation so the month/day sequence
-    // counts below can't race between two concurrent requests and hand out the
-    // same quote code or number twice. The workbook's own COUNT()-based sequence
-    // is only safe because exactly one person edits it at a time; a shared API
-    // needs this lock to keep that guarantee under concurrency.
-    await client.query("select pg_advisory_xact_lock(hashtext('bravair_quote_sequence'))");
-
-    const quoteDate = new Date();
-    const quoteDateIso = quoteDate.toISOString().slice(0, 10);
+    // Today's date in Nairobi, computed by Postgres and returned as text: pg
+    // parses `date` columns into a JS Date at the server's local midnight, which
+    // is exactly the kind of silent time-zone shift this is avoiding.
+    const { rows: dateRows } = await client.query<{ today: string }>(
+      "select to_char(now() at time zone $1, 'YYYY-MM-DD') as today",
+      [QUOTE_TIMEZONE]
+    );
+    const quoteDateIso = dateRows[0].today;
 
     const { rows: commodityRows } = await client.query<{ id: number }>(
       "select id from commodities where name = $1",
@@ -142,20 +115,15 @@ export async function POST(request: Request) {
     }
     const airlineId = airlineRows[0].id;
 
-    const { rows: monthCountRows } = await client.query<{ count: string }>(
-      `select count(*)::text as count from quotes
-       where date_trunc('month', quote_date) = date_trunc('month', $1::date)`,
-      [quoteDateIso]
-    );
-    const { rows: dayCountRows } = await client.query<{ count: string }>(
-      "select count(*)::text as count from quotes where quote_date = $1::date",
-      [quoteDateIso]
+    // Always reserve "code" before "number" so two concurrent transactions take
+    // the counter row locks in the same order and can't deadlock.
+    const quoteCode = buildQuoteCode(quoteDateIso, await nextSequence(client, "code", quoteCodePeriod(quoteDateIso)));
+    const quoteNumber = buildQuoteNumber(
+      quoteDateIso,
+      await nextSequence(client, "number", quoteNumberPeriod(quoteDateIso))
     );
 
-    const quoteCode = buildQuoteCode(quoteDate, Number(monthCountRows[0].count));
-    const quoteNumber = buildQuoteNumber(quoteDate, Number(dayCountRows[0].count));
-
-    const { rows: inserted } = await client.query(
+    const { rows: inserted } = await client.query<{ id: number }>(
       `insert into quotes
          (quote_code, quote_number, quote_date, customer, salesperson, origin_code,
           destination_code, commodity_id, commodity_subtype_id, airline_id, ready_date,
@@ -163,13 +131,13 @@ export async function POST(request: Request) {
           weight_basis, approved_freight_rate_usd_kg, freight_total_usd, service_charges,
           total_customer_quote_usd, notes)
        values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
-       returning id, quote_code, quote_number, quote_date`,
+       returning id`,
       [
         quoteCode,
         quoteNumber,
         quoteDateIso,
-        body.customer ?? null,
-        body.salesperson ?? null,
+        body.customer,
+        body.salesperson,
         body.origin,
         body.destination,
         commodityId,
@@ -183,9 +151,9 @@ export async function POST(request: Request) {
         priced.weightBasis,
         priced.approvedFreightRateUsdKg,
         priced.freightTotalUsd,
-        JSON.stringify(body.serviceCharges ?? {}),
+        JSON.stringify(body.serviceCharges),
         totalCustomerQuoteUsd,
-        body.notes ?? null,
+        body.notes,
       ]
     );
 
@@ -194,9 +162,9 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         id: inserted[0].id,
-        quoteCode: inserted[0].quote_code,
-        quoteNumber: inserted[0].quote_number,
-        quoteDate: inserted[0].quote_date,
+        quoteCode,
+        quoteNumber,
+        quoteDate: quoteDateIso,
         rateFound: priced.rateFound,
         chargeableWeightKg: priced.chargeableWeightKg,
         weightBasis: priced.weightBasis,

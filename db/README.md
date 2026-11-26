@@ -15,8 +15,9 @@ psql -c "ALTER ROLE bravair WITH PASSWORD 'your-password'"
 # 2. Copy env and fill in DATABASE_URL + INTERNAL_API_KEY
 cp .env.example .env.local
 
-# 3. Apply the schema
+# 3. Apply the schema (migrations in order)
 psql "$DATABASE_URL" -f db/migrations/0001_init.sql
+psql "$DATABASE_URL" -f db/migrations/0002_quote_sequences.sql
 
 # 4. (Re-)extract from the workbook, if seed.json needs regenerating
 python db/seed-data/extract_from_xlsx.py "/path/to/BLL_QUOTES_SYSTEM.xlsx"
@@ -89,11 +90,19 @@ From the `QUOTE` sheet's own formulas:
   `INSTRUCTIONS` sheet's worked example and the live formula on `QUOTE!A62`.
 - **Quote number**: `"BRV-" + YYMMDD + "-" + 3-digit sequence`, e.g. `BRV-260908-001`.
 
-Both sequences are "count of existing quotes in the same period, plus one" — month for
-the code, exact date for the number. `src/app/api/quotes/route.ts` computes both counts
-and takes an advisory lock inside the same transaction so concurrent requests can't be
-handed the same sequence number (the workbook's `COUNT()`-based approach is safe with one
-person editing at a time; a shared API needs the lock to keep that guarantee).
+In the workbook both sequences are "count of existing quotes in the same period, plus
+one" — month for the code, exact date for the number. The API does not count rows:
+deleting a quote would make the next one reuse an existing code. Instead each sequence
+lives in the `quote_sequences` counter table (`0002_quote_sequences.sql`), keyed by
+scope (`code` / `number`) and period (`YYYY-MM` / `YYYY-MM-DD`).
+`src/app/api/quotes/route.ts` increments both counters in the same transaction as the
+quote insert. The increment's row lock serializes concurrent requests for a period, and
+a failed insert rolls its increment back, so numbers have no gaps and are never reused.
+Migration 0002 backfills the counters from any quotes already logged.
+
+The quote date is **today in Nairobi** (`Africa/Nairobi`, UTC+3), computed by Postgres,
+not the server's UTC clock. Otherwise a quote logged between midnight and 03:00 local
+time would get the previous day's date and number, or the previous month's code.
 
 Implemented in `src/lib/quoteCode.ts`.
 
