@@ -25,7 +25,7 @@ export const faqs: { question: string; answer: string; category: FaqCategory }[]
   {
     question: "How long does shipping to Europe take?",
     answer:
-      "Air freight to Europe typically takes 24-72 hours door to door. Sea freight for less time-sensitive cargo can take 2–4 weeks depending on the route.",
+      "Air freight to Europe typically takes 24-72 hours door to door. Sea freight for less time-sensitive cargo can take 2 to 4 weeks depending on the route.",
     category: "shipping",
   },
   {
@@ -85,7 +85,7 @@ export const faqs: { question: string; answer: string; category: FaqCategory }[]
   {
     question: "Which countries do you currently export to?",
     answer:
-      "We regularly ship to buyers across Europe (via the Amsterdam/FloraHolland hub), the Middle East (Dubai, Doha), Asia (Japan, China), and Russia. If your destination isn't listed, contact us — we can usually route through a partner carrier.",
+      "We regularly ship to buyers across Europe (via the Amsterdam/FloraHolland hub), the Middle East (Dubai, Doha), Asia (Japan, China), and Russia. If your destination isn't listed, contact us: we can usually route through a partner carrier.",
     category: "general",
   },
   {

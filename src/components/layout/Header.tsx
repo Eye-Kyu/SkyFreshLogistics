@@ -2,141 +2,166 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { ChevronDown, Menu, Phone, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { primaryNav, site } from "@/data/site";
-import { Button } from "@/components/ui/primitives";
 
+// Three-part slab: the wordmark, the site's real destinations (the two groups
+// open as disclosure menus, by click or keyboard), and the hotline beside the
+// one action. It slides away while reading down and returns on the way up.
 export function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const bar = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLUListElement>(null);
+
+  // Close menus on navigation (adjusting state during render, not in an effect).
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
+    setSheetOpen(false);
+    setOpenMenu(null);
+  }
+
+  // Close an open menu on Escape or a click elsewhere.
+  useEffect(() => {
+    if (!openMenu) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenMenu(null);
+    const onClick = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenMenu(null);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("click", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("click", onClick);
+    };
+  }, [openMenu]);
+
+  // Hide on scroll down, show on scroll up (direction matters, so a passive,
+  // frame-throttled listener). Reduced motion keeps the bar in place.
+  useEffect(() => {
+    const el = bar.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const to = gsap.quickTo(el, "yPercent", { duration: 0.35, ease: "power3.out" });
+    let last = window.scrollY;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const down = y > last && y > 240;
+        if (Math.abs(y - last) > 4) to(down && !el.matches(":focus-within") ? -100 : 0);
+        last = y;
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const isCurrent = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const tel = `tel:${site.hotline.replace(/\s+/g, "")}`;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-brand-slate-200 bg-white/95 backdrop-blur">
-      {/* Hotline strip */}
-      <div className="hidden bg-brand-slate-950 text-white sm:block">
-        <div className="container-page flex items-center justify-end gap-2 py-1.5 text-xs">
-          <Phone aria-hidden="true" className="h-3 w-3 text-brand-leaf-400" />
-          <span className="text-white/60">24/7 Cargo Hotline:</span>
-          <a href={`tel:${site.hotline.replace(/\s+/g, "")}`} className="font-semibold hover:text-brand-leaf-300">
-            {site.hotline}
-          </a>
-        </div>
-      </div>
-
-      <div className="container-page flex items-center justify-between py-4">
-        <Link href="/" className="flex items-center gap-2.5" aria-label={`${site.fullName} — home`}>
-          <Image
-            src="/logo-mark.webp"
-            alt=""
-            width={36}
-            height={36}
-            priority
-            className="h-9 w-9 object-contain"
-          />
-          <span className="font-display text-lg font-semibold text-brand-slate-900">{site.name}</span>
+    <header className="nav" ref={bar}>
+      <div className="container nav__bar">
+        <Link href="/" className="nav__brand" aria-label={`${site.fullName}, home`}>
+          <Image src="/logo-mark.webp" alt="" width={36} height={36} priority />
+          {site.name}
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden lg:flex lg:items-center lg:gap-1">
-          {primaryNav.map((item) =>
-            item.children ? (
-              <div key={item.label} className="group relative">
-                <Link
-                  href={item.href}
-                  className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-brand-slate-700 hover:text-brand-navy-800"
-                >
-                  {item.label}
-                  <ChevronDown aria-hidden="true" className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
-                </Link>
-                <div className="invisible absolute left-0 top-full z-10 w-56 border border-brand-slate-200 bg-white p-2 opacity-0 shadow-lifted transition-all group-hover:visible group-hover:opacity-100">
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      className="block px-3 py-2 text-sm text-brand-slate-700 hover:bg-brand-navy-50 hover:text-brand-navy-800"
+        <nav aria-label="Main">
+          <ul className="nav__links" ref={navRef}>
+            {primaryNav
+              .filter((item) => item.href !== "/")
+              .map((item) =>
+                item.children ? (
+                  <li key={item.label} className="nav__item">
+                    <button
+                      type="button"
+                      className="nav__link"
+                      aria-expanded={openMenu === item.label}
+                      aria-controls={`menu-${item.label}`}
+                      onClick={() => setOpenMenu(openMenu === item.label ? null : item.label)}
                     >
-                      {child.label}
+                      {item.label}
+                      <ChevronDown aria-hidden="true" className="nav__chev" size={16} />
+                    </button>
+                    <div className="nav__menu" id={`menu-${item.label}`} hidden={openMenu !== item.label}>
+                      {item.children.map((child) => (
+                        <Link key={child.href} href={child.href} aria-current={isCurrent(child.href) ? "page" : undefined}>
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </li>
+                ) : (
+                  <li key={item.label}>
+                    <Link href={item.href} className="nav__link" aria-current={isCurrent(item.href) ? "page" : undefined}>
+                      {item.label}
                     </Link>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="px-4 py-2 text-sm font-medium text-brand-slate-700 hover:text-brand-navy-800"
-              >
-                {item.label}
-              </Link>
-            )
-          )}
+                  </li>
+                )
+              )}
+          </ul>
         </nav>
 
-        <div className="hidden lg:block">
-          <Button href="/contact" variant="primary">
-            Get a Quote
-          </Button>
+        <div className="nav__end">
+          <a href={tel} className="nav__hotline">
+            24/7 cargo hotline
+            <b>{site.hotline}</b>
+          </a>
+          <Link href="/contact" className="btn">
+            Get a quote
+          </Link>
+          <button
+            type="button"
+            className="nav__toggle"
+            aria-expanded={sheetOpen}
+            aria-controls="nav-sheet"
+            aria-label={sheetOpen ? "Close menu" : "Open menu"}
+            onClick={() => setSheetOpen((v) => !v)}
+          >
+            {sheetOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}
+          </button>
         </div>
-
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          className="flex h-10 w-10 items-center justify-center border border-brand-slate-200 lg:hidden"
-          aria-expanded={mobileOpen}
-          aria-label="Toggle navigation menu"
-          onClick={() => setMobileOpen((v) => !v)}
-        >
-          {mobileOpen ? (
-            <X aria-hidden="true" className="h-5 w-5" />
-          ) : (
-            <Menu aria-hidden="true" className="h-5 w-5" />
-          )}
-        </button>
       </div>
 
-      {/* Mobile nav */}
-      {mobileOpen ? (
-        <div className="border-t border-brand-slate-200 bg-white lg:hidden">
-          <nav className="container-page flex flex-col gap-1 py-4">
+      <div className="nav__sheet" id="nav-sheet" hidden={!sheetOpen}>
+        <nav aria-label="Main, small screens" className="container">
+          <ul>
             {primaryNav.map((item) => (
-              <div key={item.label}>
-                <Link
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-2 text-sm font-semibold text-brand-slate-800 hover:bg-brand-slate-50"
-                >
+              <li key={item.label}>
+                <Link href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>
                   {item.label}
                 </Link>
                 {item.children ? (
-                  <div className="ml-3 flex flex-col gap-1 border-l border-brand-slate-200 pl-3">
+                  <ul className="nav__sub">
                     {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        onClick={() => setMobileOpen(false)}
-                        className="block px-3 py-1.5 text-sm text-brand-slate-600 hover:bg-brand-slate-50"
-                      >
-                        {child.label}
-                      </Link>
+                      <li key={child.href}>
+                        <Link href={child.href}>{child.label}</Link>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 ) : null}
-              </div>
+              </li>
             ))}
-            <div className="mt-3 flex flex-col gap-2 px-3">
-              <Button href="/contact" variant="primary">
-                Get a Quote
-              </Button>
-              <a
-                href={`tel:${site.hotline.replace(/\s+/g, "")}`}
-                className="text-center text-sm font-semibold text-brand-leaf-700"
-              >
-                24/7 Hotline: {site.hotline}
-              </a>
-            </div>
-          </nav>
-        </div>
-      ) : null}
+          </ul>
+          <div className="actions" style={{ marginTop: "var(--space-lg)" }}>
+            <Link href="/contact" className="btn btn--block">
+              Get a quote
+            </Link>
+            <a href={tel} className="btn btn--quiet btn--block">
+              Call {site.hotline}
+            </a>
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }

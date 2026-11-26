@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Container, SectionHeader } from "@/components/ui/primitives";
+import { Container, CloseBand, PageIntro } from "@/components/ui/primitives";
 import { FaqSection } from "@/components/faq/FaqSection";
-import { CTASection } from "@/components/ui/CTASection";
+import { faqs } from "@/data/faq";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -11,26 +11,28 @@ export const metadata: Metadata = {
 export default function FaqPage() {
   return (
     <>
-      <section className="border-b border-brand-slate-200 py-16 sm:py-20">
+      <PageIntro
+        title="Answers before you have to ask"
+        lead="Can't find what you're looking for? Reach out and our team will help directly."
+      />
+
+      <section className="section--s">
         <Container>
-          <SectionHeader
-            align="left"
-            eyebrow="FAQ"
-            title="Answers before you have to ask"
-            subtitle="Can't find what you're looking for? Reach out and our team will help directly."
-          />
+          <div className="grid-12">
+            <div className="g-aside">
+              <p className="muted small">{faqs.length} questions, by topic</p>
+            </div>
+            <div className="g-main">
+              <FaqSection />
+            </div>
+          </div>
         </Container>
       </section>
 
-      <section className="py-20 sm:py-28">
-        <Container className="mx-auto max-w-3xl">
-          <FaqSection />
-        </Container>
-      </section>
-
-      <CTASection
+      <CloseBand
         title="Still have questions?"
-        primary={{ label: "Contact Us", href: "/contact" }}
+        line="The team answers within one business day, the hotline at any hour."
+        primary={{ label: "Contact us", href: "/contact" }}
       />
     </>
   );

@@ -1,40 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import { ProductCard } from "@/components/ui/ProductCard";
-import { TabPills } from "@/components/ui/primitives";
+import { Segmented } from "@/components/ui/primitives";
 
 type Category = { id: string; label: string };
 type Product = { name: string; category: string; description: string };
 
+// The range as a filterable index: name, family and one line each.
 export function FilterableProductGrid({
   categories,
   products,
-  tone = "navy",
+  label,
 }: {
   categories: Category[];
   products: Product[];
-  tone?: "navy" | "leaf";
+  label: string;
 }) {
   const [active, setActive] = useState(categories[0].id);
-  const filtered =
-    active === "all" ? products : products.filter((p) => p.category === active);
+  const filtered = active === "all" ? products : products.filter((p) => p.category === active);
   const labelFor = (id: string) => categories.find((c) => c.id === id)?.label ?? id;
 
   return (
     <div>
-      <TabPills items={categories} active={active} onChange={setActive} />
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <Segmented items={categories} active={active} onChange={setActive} label={`Filter ${label}`} />
+      <ul className="catalog" aria-label={label} aria-live="polite">
         {filtered.map((product) => (
-          <ProductCard
-            key={product.name}
-            name={product.name}
-            category={labelFor(product.category)}
-            description={product.description}
-            tone={tone}
-          />
+          <li key={product.name}>
+            <span>{labelFor(product.category)}</span>
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

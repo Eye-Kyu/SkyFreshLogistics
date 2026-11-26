@@ -17,12 +17,18 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <section className="py-16 sm:py-20">
-      <Container className="mx-auto max-w-3xl">
-        <h1 className="font-display text-3xl font-semibold text-brand-slate-900 sm:text-4xl">Terms of Service</h1>
-        <p className="mt-2 text-sm text-brand-slate-500">Last updated: August 20, 2026</p>
-
-        <div className="mt-10 flex max-w-none flex-col gap-6 border-t border-brand-slate-200 pt-10 leading-relaxed text-brand-slate-700">
+    <>
+    <section className="intro">
+      <Container>
+        <div className="stack-sm">
+        <h1 className="display-s" data-hero-item>Terms of Service</h1>
+        <p className="doc__meta">Last updated: August 20, 2026</p>
+        </div>
+      </Container>
+    </section>
+    <section className="section--s">
+      <Container>
+        <div className="doc__body">
           <p>
             These Terms of Service (&quot;Terms&quot;) govern your use of the {site.name} website and
             your engagement of services from {site.fullName} (&quot;Bravair&quot;, &quot;we&quot;,
@@ -31,7 +37,7 @@ export default function TermsPage() {
             please do not use this website or our services.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">1. About Bravair</h2>
+          <h2>1. About Bravair</h2>
           <p>
             Bravair coordinates export logistics for fresh horticulture and floriculture produce,
             including farmer sourcing and vetting, cold storage and pre-cooling, freight booking on air
@@ -41,7 +47,7 @@ export default function TermsPage() {
             ourselves the underlying air or sea carrier.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">2. Use of This Website</h2>
+          <h2>2. Use of This Website</h2>
           <p>
             This website is provided for informational purposes and to let prospective customers and
             growers request a quote, learn about our services, or apply to our farmer sourcing program.
@@ -50,7 +56,7 @@ export default function TermsPage() {
             operation; or scrape, copy, or reuse site content without our permission.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">3. Quote Requests Are Not Binding Contracts</h2>
+          <h2>3. Quote Requests Are Not Binding Contracts</h2>
           <p>
             Submitting a quote request through this website, or receiving a price estimate from us,
             does not create a binding contract for carriage or any other service. A shipment is only
@@ -62,7 +68,7 @@ export default function TermsPage() {
             writing.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">4. Farmer Sourcing Program</h2>
+          <h2>4. Farmer Sourcing Program</h2>
           <p>
             Participation in the farmer sourcing program is subject to Bravair&apos;s vetting process,
             including review of certifications, quality standards, and supply capacity. Submitting an
@@ -71,7 +77,7 @@ export default function TermsPage() {
             Bravair coordinates all associated cargo movement for that supply relationship.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">5. Perishable Cargo &amp; Limitation of Liability</h2>
+          <h2>5. Perishable Cargo &amp; Limitation of Liability</h2>
           <p>
             Horticultural and floricultural produce is perishable and time-sensitive by nature. While
             Bravair takes commercially reasonable care in pre-cooling, cold storage, packaging, and
@@ -94,7 +100,7 @@ export default function TermsPage() {
             of this website or our services.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">6. Documentation &amp; Compliance</h2>
+          <h2>6. Documentation &amp; Compliance</h2>
           <p>
             Bravair prepares export documentation (such as phytosanitary certificates, export permits,
             and customs paperwork) based on information supplied by the customer or grower. You are
@@ -102,7 +108,7 @@ export default function TermsPage() {
             delays or rejections caused by inaccurate or incomplete information supplied to us.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">7. Intellectual Property</h2>
+          <h2>7. Intellectual Property</h2>
           <p>
             The content on this website — including text, graphics, and branding — is owned by Bravair
             or its licensors and is protected by applicable intellectual property laws. You may view and
@@ -110,7 +116,7 @@ export default function TermsPage() {
             distribute the content without our prior written consent.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">8. Third-Party Partners</h2>
+          <h2>8. Third-Party Partners</h2>
           <p>
             Our services rely on third-party airlines, shipping lines, customs agents, and cold storage
             providers. Bravair is not responsible for acts, omissions, or delays caused by these
@@ -118,14 +124,14 @@ export default function TermsPage() {
             behalf.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">9. Indemnification</h2>
+          <h2>9. Indemnification</h2>
           <p>
             You agree to indemnify and hold Bravair harmless from any claims, losses, or expenses
             arising from your breach of these Terms, misuse of this website, or inaccurate information
             you provide to us in connection with a quote request, farmer application, or shipment.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">10. Governing Law &amp; Dispute Resolution</h2>
+          <h2>10. Governing Law &amp; Dispute Resolution</h2>
           <p>
             These Terms are governed by the laws of Kenya. Any dispute arising from these Terms or from
             services provided by Bravair will first be addressed through good-faith negotiation between
@@ -134,7 +140,7 @@ export default function TermsPage() {
             Arbitration Act (Kenya).
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">11. Changes to These Terms</h2>
+          <h2>11. Changes to These Terms</h2>
           <p>
             We may update these Terms from time to time. The &quot;Last updated&quot; date at the top of
             this page reflects the most recent revision. Continued use of this website after changes
@@ -142,10 +148,10 @@ export default function TermsPage() {
             under a signed service agreement remain governed by the terms of that agreement.
           </p>
 
-          <h2 className="font-display text-xl font-semibold text-brand-slate-900">12. Contact</h2>
+          <h2>12. Contact</h2>
           <p>
             Questions about these Terms can be sent to{" "}
-            <a href={`mailto:${site.email}`} className="text-brand-leaf-700 hover:underline">
+            <a href={`mailto:${site.email}`} className="textlink">
               {site.email}
             </a>{" "}
             or to {site.address}.
@@ -153,5 +159,6 @@ export default function TermsPage() {
         </div>
       </Container>
     </section>
+    </>
   );
 }

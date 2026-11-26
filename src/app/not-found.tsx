@@ -1,25 +1,23 @@
-import { Compass } from "lucide-react";
 import { Container, Button } from "@/components/ui/primitives";
 
 export default function NotFound() {
   return (
-    <section className="flex min-h-[60vh] items-center justify-center py-20">
-      <Container className="flex flex-col items-center gap-5 text-center">
-        <span className="flex h-16 w-16 items-center justify-center border border-brand-slate-200 text-brand-navy-700">
-          <Compass aria-hidden="true" className="h-7 w-7" strokeWidth={1.5} />
-        </span>
-        <h1 className="font-display text-3xl font-semibold text-brand-slate-900">Page not found</h1>
-        <p className="max-w-md text-brand-slate-600">
-          The page you&apos;re looking for doesn&apos;t exist or may have moved. Try heading back home,
-          or get in touch if you were looking for something specific.
-        </p>
-        <div className="flex gap-3">
-          <Button href="/" variant="primary">
-            Back to Home
-          </Button>
-          <Button href="/contact" variant="ghost">
-            Contact Us
-          </Button>
+    <section className="section">
+      <Container>
+        <div className="corridor stack-lg">
+          <p className="corridor__code" aria-hidden="true">
+            404
+          </p>
+          <h1 data-hero-item>This lane doesn&apos;t exist</h1>
+          <p className="lead" data-hero-item>
+            The page you&apos;re looking for has moved or never existed. Head home, or tell us what you were after.
+          </p>
+          <div className="actions" data-hero-item>
+            <Button href="/">Back to home</Button>
+            <Button href="/contact" variant="quiet">
+              Contact us
+            </Button>
+          </div>
         </div>
       </Container>
     </section>

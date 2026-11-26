@@ -4,7 +4,7 @@
 export const site = {
   name: "Bravair",
   fullName: "Bravair Logistics Limited",
-  tagline: "From farm to global market — fresh, fast, and flawlessly coordinated.",
+  tagline: "From farm to global market: fresh, fast, and flawlessly coordinated.",
   shortTagline: "Fresh. Fast. Reliable.",
   phone: "+254 700 000 000", // [P]
   hotline: "+254 700 111 222", // [P] 24/7 cargo hotline

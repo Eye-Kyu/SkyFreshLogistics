@@ -1,66 +1,77 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Sprout } from "lucide-react";
+import { site } from "@/data/site";
 
-// NOTE for developer: this form currently simulates submission client-side.
-// Wire `handleSubmit` up to your form backend (API route, CRM, or email service)
-// before launch — see the Contact page's QuoteForm for the same pattern.
+// NOTE for developer: this form has no backend yet. It used to print a fake
+// "Application received" message; it now says plainly that nothing was sent
+// and points the grower to email or the hotline. Set `ENDPOINT` to a real API
+// route (see /api/quote-requests for the pattern) to make it submit.
+const ENDPOINT = "";
 
 export function FarmerForm() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "sent" | "unsent" | "error">("idle");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
+    const firstInvalid = form.querySelector<HTMLElement>(":invalid");
+    if (firstInvalid) {
+      form.reportValidity();
+      firstInvalid.focus();
+      return;
+    }
+    if (!ENDPOINT) {
+      setStatus("unsent");
+      return;
+    }
     setStatus("submitting");
-    setTimeout(() => setStatus("success"), 600);
+    try {
+      const res = await fetch(ENDPOINT, { method: "POST", body: new FormData(form) });
+      setStatus(res.ok ? "sent" : "error");
+    } catch {
+      setStatus("error");
+    }
   }
 
-  if (status === "success") {
+  if (status === "sent") {
     return (
-      <div className="flex flex-col items-center gap-3 border border-brand-navy-700/20 bg-brand-navy-50 p-8 text-center">
-        <Sprout aria-hidden="true" className="h-8 w-8 text-brand-navy-700" strokeWidth={1.5} />
-        <h3 className="font-display text-lg font-semibold text-brand-navy-900">Application received</h3>
-        <p className="text-sm text-brand-navy-800">
-          Thank you for registering. Our sourcing team will review your details and follow up within 3–5 business days.
-        </p>
+      <div className="notice notice--ok stack-sm" role="status">
+        <h3>Application received</h3>
+        <p>Our sourcing team will review your details and follow up within 3 to 5 business days.</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 border border-brand-slate-200 bg-white p-6 sm:p-8">
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Farm / Farmer name" name="farmName" required />
+    <form onSubmit={handleSubmit} className="quote-form" data-endpoint={ENDPOINT} noValidate>
+      <div className="form-grid">
+        <Field label="Farm / Farmer name" name="farmName" autoComplete="organization" required />
         <Field label="Location (County/Region)" name="location" required />
         <Field label="Primary produce grown" name="produce" required placeholder="e.g. Avocados, roses" />
         <Field label="Land size (acres)" name="landSize" type="number" />
-        <Field label="Phone number" name="phone" type="tel" required />
-        <Field label="Email address" name="email" type="email" required />
+        <Field label="Phone number" name="phone" type="tel" autoComplete="tel" required />
+        <Field label="Email address" name="email" type="email" autoComplete="email" required />
+        <label className="field span-2">
+          <span className="field__label">Certifications held (if any)</span>
+          <input name="certifications" placeholder="e.g. GlobalGAP, KEPHIS" className="input" />
+        </label>
+        <label className="field span-2">
+          <span className="field__label">
+            Tell us about your supply capacity <span className="field__hint">(required)</span>
+          </span>
+          <textarea name="message" rows={4} required className="input" />
+        </label>
       </div>
-      <label className="flex flex-col gap-1.5 text-sm">
-        <span className="font-medium text-brand-slate-700">Certifications held (if any)</span>
-        <input
-          name="certifications"
-          placeholder="e.g. GlobalGAP, KEPHIS"
-          className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
-        />
-      </label>
-      <label className="flex flex-col gap-1.5 text-sm">
-        <span className="font-medium text-brand-slate-700">Tell us about your supply capacity</span>
-        <textarea
-          name="message"
-          rows={4}
-          required
-          className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
-        />
-      </label>
-      <button
-        type="submit"
-        disabled={status === "submitting"}
-        className="mt-2 inline-flex items-center justify-center rounded-md bg-brand-navy-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-navy-800 disabled:opacity-60"
-      >
-        {status === "submitting" ? "Submitting..." : "Submit Application"}
+      <p className={status === "error" ? "form-error" : "form-note"} role="status">
+        {status === "unsent"
+          ? `Nothing was sent: online applications are not connected yet. Email ${site.email} or call ${site.hotline} with these details.`
+          : status === "error"
+            ? "That did not go through. Try again in a minute, or email us."
+            : ""}
+      </p>
+      <button type="submit" className="btn" disabled={status === "submitting"} aria-busy={status === "submitting"} style={{ justifySelf: "start" }}>
+        {status === "submitting" ? "Submitting…" : "Submit application"}
       </button>
     </form>
   );
@@ -72,26 +83,24 @@ function Field({
   type = "text",
   required = false,
   placeholder,
+  autoComplete,
+  className = "",
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
   placeholder?: string;
+  autoComplete?: string;
+  className?: string;
 }) {
   return (
-    <label className="flex flex-col gap-1.5 text-sm">
-      <span className="font-medium text-brand-slate-700">
+    <label className={`field ${className}`}>
+      <span className="field__label">
         {label}
-        {required ? <span className="text-brand-navy-600"> *</span> : null}
+        {required ? <span className="field__hint"> (required)</span> : null}
       </span>
-      <input
-        name={name}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        className="border border-brand-slate-300 px-3 py-2.5 text-sm text-brand-slate-800 focus:border-brand-navy-700 focus:outline-none"
-      />
+      <input name={name} type={type} required={required} placeholder={placeholder} autoComplete={autoComplete} className="input" />
     </label>
   );
 }
