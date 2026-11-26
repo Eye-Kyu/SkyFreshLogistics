@@ -28,7 +28,10 @@ Every placeholder is marked `[P]` in the data files and inline in a few componen
 - Product photography — the Services, Horticulture, Floriculture, and Trust pages use
   colored placeholder blocks marked `[P]` instead of real photos.
 - `src/components/forms/QuoteForm.tsx` and `FarmerForm.tsx` — submission is simulated
-  client-side. Wire `handleSubmit` to a real backend, CRM, or email service.
+  client-side. Wire `handleSubmit` to a real backend, CRM, or email service. (The
+  QuoteForm's instant freight estimate, `QuoteEstimate.tsx`, is live: it calls
+  `/api/lists` and `/api/quotes/price`. Its fields are named `estimate*` so they travel
+  with the quote request once submission is wired.)
 - `src/components/tools/TransitCalculator.tsx` — transit times are illustrative. Replace
   with real route data from operations.
 - Legal — `/privacy` and `/terms` are placeholder copy and need review by counsel,

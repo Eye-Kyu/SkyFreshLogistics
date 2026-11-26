@@ -2,10 +2,13 @@
 
 import { FormEvent, useState } from "react";
 import { CircleCheck } from "lucide-react";
+import { QuoteEstimate } from "./QuoteEstimate";
 
-// NOTE for developer: this form currently simulates submission client-side.
-// Wire `handleSubmit` up to your form backend (API route, CRM, or email service
-// such as SendGrid/Postmark, or a Zapier/Make webhook) before launch.
+// NOTE for developer: the instant estimate (QuoteEstimate) is live against
+// /api/quotes/price, but the quote *request* itself still simulates submission
+// client-side. Wire `handleSubmit` up to your form backend (API route, CRM, or
+// email service such as SendGrid/Postmark, or a Zapier/Make webhook) before
+// launch; the estimate's fields are named `estimate*` so they arrive with it.
 
 export function QuoteForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
@@ -50,6 +53,7 @@ export function QuoteForm() {
         <Field label="Estimated volume" name="volume" placeholder="e.g. 2 tonnes / week" />
         <Field label="Destination" name="destination" required placeholder="e.g. Amsterdam, Netherlands" className="sm:col-span-2" />
       </div>
+      <QuoteEstimate />
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-medium text-brand-slate-700">Message</span>
         <textarea
